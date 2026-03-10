@@ -1,0 +1,48 @@
+name: PR
+
+on: pull_request
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux-debug:
+    name: Linux debug
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ponylang/shared-docker-ci-x86-64-unknown-linux-builder:release
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: make ci config=debug
+
+  linux-release:
+    name: Linux release
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ponylang/shared-docker-ci-x86-64-unknown-linux-builder:release
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: make ci config=release
+
+  macos-debug:
+    name: macOS debug
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pony tools
+        run: bash .ci-scripts/macOS-install-release-pony-tools.bash
+      - name: Test
+        run: make ci config=debug
+
+  macos-release:
+    name: macOS release
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pony tools
+        run: bash .ci-scripts/macOS-install-release-pony-tools.bash
+      - name: Test
+        run: make ci config=release

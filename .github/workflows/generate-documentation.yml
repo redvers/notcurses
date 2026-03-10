@@ -1,0 +1,20 @@
+name: Generate documentation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-documentation:
+    name: Generate documentation
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ponylang/shared-docker-ci-x86-64-unknown-linux-builder:release
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate docs
+        run: make docs
+      - name: Upload docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: build/notcurses-docs/

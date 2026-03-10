@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    tags: \d+.\d+.\d+
+
+concurrency:
+  group: release
+
+jobs:
+  validate:
+    name: Validate release
+    uses: ponylang/shared-workflows/.github/workflows/validate-a-library-release.yml@main
+    with:
+      version-file: VERSION
+      changelog-file: CHANGELOG.md
+
+  generate-documentation:
+    name: Generate documentation
+    needs: validate
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/ponylang/shared-docker-ci-x86-64-unknown-linux-builder:release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Generate docs
+        run: make docs
+      - name: Upload docs
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: build/notcurses-docs/
+
+  trigger-announce:
+    name: Trigger announce
+    needs: [validate, generate-documentation]
+    uses: ponylang/shared-workflows/.github/workflows/trigger-announce-a-library-release.yml@main
+    secrets:
+      token: ${{ secrets.PONYLANG_TOKEN }}

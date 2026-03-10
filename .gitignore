@@ -1,0 +1,7 @@
+build/*
+*.swp
+TAGS
+tags
+lock.json
+_corral/
+_repos/

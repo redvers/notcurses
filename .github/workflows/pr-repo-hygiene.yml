@@ -1,0 +1,12 @@
+name: PR repo hygiene
+
+on: pull_request
+
+jobs:
+  superlinter:
+    name: Lint
+    uses: ponylang/shared-workflows/.github/workflows/repo-hygiene-superlinter.yml@main
+
+  verify-changelog:
+    name: Verify CHANGELOG
+    uses: ponylang/shared-workflows/.github/workflows/changelog-bot-check.yml@main

@@ -1,0 +1,15 @@
+{
+  "info": {
+    "description": "Pony FFI bindings to libnotcurses",
+    "version": "0.0.0",
+    "licence": "BSD-2-Clause",
+    "homepage": "https://github.com/redvers/notcurses",
+    "documentation_url": "https://redvers.github.io/notcurses/"
+  },
+  "deps": [],
+  "packages": [
+    {
+      "name": "notcurses"
+    }
+  ]
+}

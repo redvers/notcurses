@@ -1,0 +1,12 @@
+name: Release notes reminder
+
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  release-notes-reminder:
+    name: Release notes reminder
+    uses: ponylang/shared-workflows/.github/workflows/release-notes-reminder.yml@main
+    secrets:
+      token: ${{ secrets.PONYLANG_TOKEN }}

@@ -1,0 +1,17 @@
+name: Lint action workflows
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/*.yml
+
+jobs:
+  lint:
+    name: Lint action workflows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install actionlint
+        run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+      - name: Lint
+        run: ./actionlint
