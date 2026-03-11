@@ -1,94 +1,61 @@
-use "lib:notcurses-core"
+class NotCurses
+  var ptr: Pointer[NcNotcurses] tag = Pointer[NcNotcurses]
+  var enclosing: (NotCursesActor | None)
 
-// Lifecycle
-use @notcurses_core_init[Pointer[_NcNotcurses]](
-  opts: NullablePointer[Notcursesoptions] tag, fp: Pointer[_File] tag)
-use @notcurses_stop[I32](nc: Pointer[_NcNotcurses] tag)
-use @notcurses_stdplane[Pointer[_NcPlane]](nc: Pointer[_NcNotcurses] tag)
-use @notcurses_version[Pointer[U8]]()
+  new none() =>
+    enclosing = None
 
-// Planes
-use @ncplane_create[Pointer[_NcPlane]](
-  n: Pointer[_NcPlane] tag, nopts: NullablePointer[Ncplaneoptions] tag)
-use @ncplane_destroy[I32](n: Pointer[_NcPlane] tag)
-use @ncplane_dim_yx[None](
-  n: Pointer[_NcPlane] tag, y: Pointer[U32] tag, x: Pointer[U32] tag)
-use @ncplane_cursor_move_yx[I32](
-  n: Pointer[_NcPlane] tag, y: I32, x: I32)
-use @ncplane_cursor_yx[None](
-  n: Pointer[_NcPlane] tag, y: Pointer[U32] tag, x: Pointer[U32] tag)
-use @ncplane_home[None](n: Pointer[_NcPlane] tag)
-use @ncplane_erase[None](n: Pointer[_NcPlane] tag)
+  new create(enc: NotCursesActor ref,
+    termtype: (String | None) = None,
+    loglevel: I32 = 0,
+    margin_t: U32 = 0,
+    margin_r: U32 = 0,
+    margin_b: U32 = 0,
+    margin_l: U32 = 0,
+    flags: U64 = NcOption.suppress_banners()
+  )? =>
+    let options: Notcursesoptions = Notcursesoptions
+    match termtype
+    | let x: String => options.termtype = x.cstring()
+    | let x: None   => options.termtype = Pointer[U8]
+    end
+    options.loglevel = loglevel
+    options.margin_t = margin_t
+    options.margin_r = margin_r
+    options.margin_b = margin_b
+    options.margin_l = margin_l
+    options.flags = flags
+    enclosing = enc
 
-// Output
-use @ncplane_putc_yx[I32](
-  n: Pointer[_NcPlane] tag, y: I32, x: I32,
-  c: NullablePointer[Nccell] tag)
-use @ncplane_putegc_yx[I32](
-  n: Pointer[_NcPlane] tag, y: I32, x: I32,
-  gclust: Pointer[U8] tag, sbytes: Pointer[USize] tag)
+    ptr = NotCursesFFI.core_init(
+      NullablePointer[Notcursesoptions](options), Pointer[CFile]
+    )
 
-// Styles & Colors
-use @ncplane_set_styles[None](n: Pointer[_NcPlane] tag, stylebits: U32)
-use @ncplane_on_styles[None](n: Pointer[_NcPlane] tag, stylebits: U32)
-use @ncplane_off_styles[None](n: Pointer[_NcPlane] tag, stylebits: U32)
-use @ncplane_set_fg_rgb[I32](n: Pointer[_NcPlane] tag, channel: U32)
-use @ncplane_set_bg_rgb[I32](n: Pointer[_NcPlane] tag, channel: U32)
-use @ncplane_set_base[I32](
-  n: Pointer[_NcPlane] tag, egc: Pointer[U8] tag,
-  stylemask: U16, channels: U64)
+    if (ptr.is_null()) then error end
+    (enclosing as NotCursesActor)._initiate()
 
-// Rendering
-use @ncpile_render[I32](n: Pointer[_NcPlane] tag)
-use @ncpile_rasterize[I32](n: Pointer[_NcPlane] tag)
+  fun stdplane(): NotCursesPlane =>
+    NotCursesPlane.from_ptr(NotCursesFFI.stdplane(ptr))
 
-// Input
-use @notcurses_get[U32](
-  n: Pointer[_NcNotcurses] tag, ts: Pointer[None] tag,
-  ni: NullablePointer[Ncinput] tag)
+  fun dim_yx(): (U32, U32) =>
+    NotCursesFFI.term_dim_yx(ptr)
 
-// Capabilities & Mouse
-use @notcurses_capabilities[NullablePointer[Nccapabilities]](
-  n: Pointer[_NcNotcurses] tag)
-use @notcurses_mice_enable[I32](
-  n: Pointer[_NcNotcurses] tag, eventmask: U32)
-
-// Pony reimplementations of inline C functions from notcurses.h.
-primitive Notcurses
-  fun render(nc: Pointer[_NcNotcurses]): I32 =>
+  fun render(): I32 =>
     """
-    Renders and rasterizes the standard plane pile.
-    Reimplements notcurses_render() which is inline in the C header.
+    Renders and Rasterizes the default pile.
     """
-    let stdn = @notcurses_stdplane(nc)
-    if @ncpile_render(stdn) != 0 then return -1 end
-    @ncpile_rasterize(stdn)
+    NotCursesFFI.render(ptr)
 
-  fun get_nblock(
-    nc: Pointer[_NcNotcurses],
-    ni: NullablePointer[Ncinput])
-    : U32
-  =>
-    """
-    Non-blocking input. Returns immediately with 0 if no input available.
-    Reimplements notcurses_get_nblock().
-    """
-    var ts: (I64, I64) = (0, 0)
-    @notcurses_get(nc, addressof ts, ni)
+  fun can_true_color(): Bool =>
+    NotCursesFFI.cantruecolor(ptr)
 
-  fun get_blocking(
-    nc: Pointer[_NcNotcurses],
-    ni: NullablePointer[Ncinput])
-    : U32
-  =>
-    """
-    Blocking input. Waits indefinitely for input.
-    Reimplements notcurses_get_blocking().
-    """
-    @notcurses_get(nc, Pointer[None], ni)
+  fun can_utf8(): Bool =>
+    NotCursesFFI.canutf8(ptr)
 
-  fun cantruecolor(nc: Pointer[_NcNotcurses]): Bool =>
-    try (@notcurses_capabilities(nc))()?.rgb != 0 else false end
 
-  fun canutf8(nc: Pointer[_NcNotcurses]): Bool =>
-    try (@notcurses_capabilities(nc))()?.utf8 != 0 else false end
+
+
+
+  fun stop(): I32 =>
+    NotCursesFFI.stop(ptr)
+

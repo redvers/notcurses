@@ -66,3 +66,35 @@ primitive NcMice
   fun button_event(): U32 =>  0x2
   fun drag_event(): U32 =>    0x4
   fun all_events(): U32 =>    0x7
+
+primitive NcAlign
+  fun unaligned(): I32 => 0
+  fun left(): I32 =>      1
+  fun center(): I32 =>    2
+  fun right(): I32 =>     3
+
+primitive NcAlpha
+  fun highcontrast(): U32 => 0x30000000
+  fun transparent(): U32 =>  0x20000000
+  fun blend(): U32 =>        0x10000000
+  fun opaque(): U32 =>       0x00000000
+
+primitive NcBoxGrad
+  fun top(): U32 =>    0x0010
+  fun right(): U32 =>  0x0020
+  fun bottom(): U32 => 0x0040
+  fun left(): U32 =>   0x0080
+
+primitive NcReelOption
+  fun infinitescroll(): U64 => 0x0001
+  fun circular(): U64 =>       0x0002
+
+primitive NcProgbarOption
+  fun retrograde(): U64 => 0x0001
+
+primitive NcBoxCtl
+  fun no_borders(): U32 => 0b0000_1111
+  fun all_borders(): U32 => 0b0000_0000
+  fun hgradient(): U32 => 0b0001_0000
+  fun vgradient(): U32 => 0b0010_0000
+

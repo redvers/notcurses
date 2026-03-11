@@ -37,7 +37,7 @@ class iso _TestLinkage is UnitTest
     // Verify init/stop cycle. init may return null if no TTY is available
     // (e.g., in CI), which is fine — we just test that linkage works.
     let nc = @notcurses_core_init(
-      NullablePointer[Notcursesoptions](consume opts), Pointer[_File])
+      NullablePointer[Notcursesoptions](consume opts), Pointer[CFile])
     if not nc.is_null() then
       h.log("notcurses initialized successfully, stopping")
       @notcurses_stop(nc)

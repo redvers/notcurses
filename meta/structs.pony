@@ -10,6 +10,7 @@
      000000: [ArrayType size=(0-1)]->[FundamentalType(int) size=32] -- UNSUPPORTED - FIXME: __val  
 */
 struct Anon42
+  var ___val: Pointer[I32] = Pointer[I32]
 
 
 /*
@@ -32,6 +33,17 @@ struct Anon42
      000384: [PointerType size=64]->[FundamentalType(char) size=8]: tm_zone  
 */
 struct Tm
+  var _tm_sec: I32 = I32(0)
+  var _tm_min: I32 = I32(0)
+  var _tm_hour: I32 = I32(0)
+  var _tm_mday: I32 = I32(0)
+  var _tm_mon: I32 = I32(0)
+  var _tm_year: I32 = I32(0)
+  var _tm_wday: I32 = I32(0)
+  var _tm_yday: I32 = I32(0)
+  var _tm_isdst: I32 = I32(0)
+  var _tm_gmtoff: I64 = I64(0)
+  var _tm_zone: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -45,6 +57,8 @@ struct Tm
      000064: [FundamentalType(long int) size=64]: tv_nsec  
 */
 struct Timespec
+  var _tv_sec: I64 = I64(0)
+  var _tv_nsec: I64 = I64(0)
 
 
 /*
@@ -58,6 +72,8 @@ struct Timespec
      000128: [Struct size=128,fid: f6]: it_value  
 */
 struct Itimerspec
+  var _it_interval: Timespec = Timespec
+  var _it_value: Timespec = Timespec
 
 
 /*
@@ -73,6 +89,10 @@ struct Itimerspec
      000128: [UNION size=384] -- UNSUPPORTED FIXME: _sigev_un  
 */
 struct Sigevent
+  var _sigev_value: None = None
+  var _sigev_signo: I32 = I32(0)
+  var _sigev_notify: I32 = I32(0)
+  var __sigev_un: None = None
 
 
 /*
@@ -89,6 +109,11 @@ struct Sigevent
      001024: [ArrayType size=(0-12)]->[PointerType size=64]->[FundamentalType(char) size=8] -- UNSUPPORTED - FIXME: __names  
 */
 struct Localestruct
+  var ___locales: Pointer[NullablePointer[Localedata]] = Pointer[NullablePointer[Localedata]]
+  var ___ctype_b: Pointer[U16] = Pointer[U16]
+  var ___ctype_tolower: Pointer[I32] = Pointer[I32]
+  var ___ctype_toupper: Pointer[I32] = Pointer[I32]
+  var ___names: Pointer[String] = Pointer[String]
 
 
 /*
@@ -102,6 +127,8 @@ struct Localestruct
      000032: [UNION size=32] -- UNSUPPORTED FIXME: __value  
 */
 struct Anon169
+  var ___count: I32 = I32(0)
+  var ___value: None = None
 
 
 /*
@@ -142,6 +169,35 @@ struct Anon169
      001568: [ArrayType size=(0-19)]->[FundamentalType(char) size=8] -- UNSUPPORTED - FIXME: _unused2  
 */
 struct IOFILE
+  var __flags: I32 = I32(0)
+  var __IO_read_ptr: Pointer[U8] = Pointer[U8]
+  var __IO_read_end: Pointer[U8] = Pointer[U8]
+  var __IO_read_base: Pointer[U8] = Pointer[U8]
+  var __IO_write_base: Pointer[U8] = Pointer[U8]
+  var __IO_write_ptr: Pointer[U8] = Pointer[U8]
+  var __IO_write_end: Pointer[U8] = Pointer[U8]
+  var __IO_buf_base: Pointer[U8] = Pointer[U8]
+  var __IO_buf_end: Pointer[U8] = Pointer[U8]
+  var __IO_save_base: Pointer[U8] = Pointer[U8]
+  var __IO_backup_base: Pointer[U8] = Pointer[U8]
+  var __IO_save_end: Pointer[U8] = Pointer[U8]
+  var __markers: NullablePointer[IOmarker] = NullablePointer[IOmarker].none()
+  var __chain: NullablePointer[IOFILE] = NullablePointer[IOFILE].none()
+  var __fileno: I32 = I32(0)
+  var __flags2: I32 = I32(0)
+  var __old_offset: I64 = I64(0)
+  var __cur_column: U16 = U16(0)
+  var __vtable_offset: I8 = I8(0)
+  var __shortbuf: Pointer[U8] = Pointer[U8]
+  var __lock: Pointer[None] = Pointer[None]
+  var __offset: I64 = I64(0)
+  var __codecvt: NullablePointer[IOcodecvt] = NullablePointer[IOcodecvt].none()
+  var __wide_data: NullablePointer[IOwidedata] = NullablePointer[IOwidedata].none()
+  var __freeres_list: NullablePointer[IOFILE] = NullablePointer[IOFILE].none()
+  var __freeres_buf: Pointer[None] = Pointer[None]
+  var ___pad5: U64 = U64(0)
+  var __mode: I32 = I32(0)
+  var __unused2: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -155,6 +211,8 @@ struct IOFILE
      000064: [Struct size=64,fid: f19]: __state  
 */
 struct Gfpost
+  var ___pos: I64 = I64(0)
+  var ___state: Anon169 = Anon169
 
 
 /*
@@ -168,6 +226,8 @@ struct Gfpost
      000064: [Struct size=64,fid: f19]: __state  
 */
 struct Gfpos64t
+  var ___pos: I64 = I64(0)
+  var ___state: Anon169 = Anon169
 
 
 /*
@@ -216,6 +276,10 @@ struct IOwidedata
      000192: [PointerType size=64]->[FunctionType] -- WRITE MANUALLY: close  
 */
 struct IOcookieiofunctionst
+  var _read: Pointer[None] = Pointer[None]
+  var _write: Pointer[None] = Pointer[None]
+  var _seek: Pointer[None] = Pointer[None]
+  var _close: Pointer[None] = Pointer[None]
 
 
 /*
@@ -229,6 +293,8 @@ struct IOcookieiofunctionst
      000032: [FundamentalType(int) size=32]: rem  
 */
 struct Anon407
+  var _quot: I32 = I32(0)
+  var _rem: I32 = I32(0)
 
 
 /*
@@ -242,6 +308,8 @@ struct Anon407
      000064: [FundamentalType(long int) size=64]: rem  
 */
 struct Anon409
+  var _quot: I64 = I64(0)
+  var _rem: I64 = I64(0)
 
 
 /*
@@ -255,6 +323,8 @@ struct Anon409
      000064: [FundamentalType(long long int) size=64]: rem  
 */
 struct Anon411
+  var _quot: I64 = I64(0)
+  var _rem: I64 = I64(0)
 
 
 /*
@@ -267,6 +337,7 @@ struct Anon411
      000000: [ArrayType size=(0-15)]->[FundamentalType(long unsigned int) size=64] -- UNSUPPORTED - FIXME: __val  
 */
 struct Anon463
+  var ___val: Pointer[U64] = Pointer[U64]
 
 
 /*
@@ -280,6 +351,8 @@ struct Anon463
      000064: [FundamentalType(long int) size=64]: tv_usec  
 */
 struct Timeval
+  var _tv_sec: I64 = I64(0)
+  var _tv_usec: I64 = I64(0)
 
 
 /*
@@ -292,6 +365,7 @@ struct Timeval
      000000: [ArrayType size=(0-15)]->[FundamentalType(long int) size=64] -- UNSUPPORTED - FIXME: fds_bits  
 */
 struct Anon468
+  var _fds_bits: Pointer[I64] = Pointer[I64]
 
 
 /*
@@ -305,6 +379,8 @@ struct Anon468
      000064: [PointerType size=64]->[Struct size=128,fid: f42]: __next  
 */
 struct Pthreadinternallist
+  var ___prev: NullablePointer[Pthreadinternallist] = NullablePointer[Pthreadinternallist].none()
+  var ___next: NullablePointer[Pthreadinternallist] = NullablePointer[Pthreadinternallist].none()
 
 
 /*
@@ -317,6 +393,7 @@ struct Pthreadinternallist
      000000: [PointerType size=64]->[Struct size=64,fid: f42]: __next  
 */
 struct Pthreadinternalslist
+  var ___next: NullablePointer[Pthreadinternalslist] = NullablePointer[Pthreadinternalslist].none()
 
 
 /*
@@ -336,6 +413,14 @@ struct Pthreadinternalslist
      000192: [Struct size=128,fid: f42]: __list  
 */
 struct Pthreadmutexs
+  var ___lock: I32 = I32(0)
+  var ___count: U32 = U32(0)
+  var ___owner: I32 = I32(0)
+  var ___nusers: U32 = U32(0)
+  var ___kind: I32 = I32(0)
+  var ___spins: I16 = I16(0)
+  var ___elision: I16 = I16(0)
+  var ___list: Pthreadinternallist = Pthreadinternallist
 
 
 /*
@@ -359,6 +444,18 @@ struct Pthreadmutexs
      000384: [FundamentalType(unsigned int) size=32]: __flags  
 */
 struct Pthreadrwlockarcht
+  var ___readers: U32 = U32(0)
+  var ___writers: U32 = U32(0)
+  var ___wrphase_futex: U32 = U32(0)
+  var ___writers_futex: U32 = U32(0)
+  var ___pad3: U32 = U32(0)
+  var ___pad4: U32 = U32(0)
+  var ___cur_writer: I32 = I32(0)
+  var ___shared: I32 = I32(0)
+  var ___rwelision: I8 = I8(0)
+  var ___pad1: Pointer[U8] = Pointer[U8]
+  var ___pad2: U64 = U64(0)
+  var ___flags: U32 = U32(0)
 
 
 /*
@@ -377,6 +474,13 @@ struct Pthreadrwlockarcht
      000320: [ArrayType size=(0-1)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: __g_signals  
 */
 struct Pthreadconds
+  var ___wseq: None = None
+  var ___g1_start: None = None
+  var ___g_refs: Pointer[U32] = Pointer[U32]
+  var ___g_size: Pointer[U32] = Pointer[U32]
+  var ___g1_orig_size: U32 = U32(0)
+  var ___wrefs: U32 = U32(0)
+  var ___g_signals: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -389,6 +493,7 @@ struct Pthreadconds
      000000: [FundamentalType(int) size=32]: __data  
 */
 struct Anon488
+  var ___data: I32 = I32(0)
 
 
 /*
@@ -407,6 +512,13 @@ struct Anon488
      000320: [PointerType size=64]->[FundamentalType(int) size=32]: end_ptr  
 */
 struct Randomdata
+  var _fptr: Pointer[I32] = Pointer[I32]
+  var _rptr: Pointer[I32] = Pointer[I32]
+  var _state: Pointer[I32] = Pointer[I32]
+  var _rand_type: I32 = I32(0)
+  var _rand_deg: I32 = I32(0)
+  var _rand_sep: I32 = I32(0)
+  var _end_ptr: Pointer[I32] = Pointer[I32]
 
 
 /*
@@ -423,6 +535,11 @@ struct Randomdata
      000128: [FundamentalType(long long unsigned int) size=64]: __a  
 */
 struct Drand48data
+  var ___x: Pointer[U16] = Pointer[U16]
+  var ___old_x: Pointer[U16] = Pointer[U16]
+  var ___c: U16 = U16(0)
+  var ___init: U16 = U16(0)
+  var ___a: U64 = U64(0)
 
 
 /*
@@ -439,6 +556,11 @@ struct Drand48data
      000128: [UNION size=896] -- UNSUPPORTED FIXME: _sifields  
 */
 struct Anon666
+  var _si_signo: I32 = I32(0)
+  var _si_errno: I32 = I32(0)
+  var _si_code: I32 = I32(0)
+  var ___pad0: I32 = I32(0)
+  var __sifields: None = None
 
 
 /*
@@ -454,6 +576,10 @@ struct Anon666
      001152: [PointerType size=64]->[FunctionType] -- WRITE MANUALLY: sa_restorer  
 */
 struct Sigaction
+  var ___sigaction_handler: None = None
+  var _sa_mask: Anon463 = Anon463
+  var _sa_flags: I32 = I32(0)
+  var _sa_restorer: Pointer[None] = Pointer[None]
 
 
 /*
@@ -470,6 +596,11 @@ struct Sigaction
      000160: [ArrayType size=(0-6)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: __glibc_reserved1  
 */
 struct Fpxswbytes
+  var _magic1: U32 = U32(0)
+  var _extended_size: U32 = U32(0)
+  var _xstate_bv: U64 = U64(0)
+  var _xstate_size: U32 = U32(0)
+  var ___glibc_reserved1: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -483,6 +614,8 @@ struct Fpxswbytes
      000064: [FundamentalType(short unsigned int) size=16]: exponent  
 */
 struct Fpreg
+  var _significand: Pointer[U16] = Pointer[U16]
+  var _exponent: U16 = U16(0)
 
 
 /*
@@ -497,6 +630,9 @@ struct Fpreg
      000080: [ArrayType size=(0-2)]->[FundamentalType(short unsigned int) size=16] -- UNSUPPORTED - FIXME: __glibc_reserved1  
 */
 struct Fpxreg
+  var _significand: Pointer[U16] = Pointer[U16]
+  var _exponent: U16 = U16(0)
+  var ___glibc_reserved1: Pointer[U16] = Pointer[U16]
 
 
 /*
@@ -509,6 +645,7 @@ struct Fpxreg
      000000: [ArrayType size=(0-3)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: element  
 */
 struct Xmmreg
+  var _element: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -531,6 +668,17 @@ struct Xmmreg
      003328: [ArrayType size=(0-23)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: __glibc_reserved1  
 */
 struct Fpstate
+  var _cwd: U16 = U16(0)
+  var _swd: U16 = U16(0)
+  var _ftw: U16 = U16(0)
+  var _fop: U16 = U16(0)
+  var _rip: U64 = U64(0)
+  var _rdp: U64 = U64(0)
+  var _mxcsr: U32 = U32(0)
+  var _mxcr_mask: U32 = U32(0)
+  var __st: Pointer[Fpxreg] = Pointer[Fpxreg]
+  var __xmm: Pointer[Xmmreg] = Pointer[Xmmreg]
+  var ___glibc_reserved1: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -570,6 +718,34 @@ struct Fpstate
      001536: [ArrayType size=(0-7)]->[FundamentalType(long unsigned int) size=64] -- UNSUPPORTED - FIXME: __reserved1  
 */
 struct Sigcontext
+  var _r8: U64 = U64(0)
+  var _r9: U64 = U64(0)
+  var _r10: U64 = U64(0)
+  var _r11: U64 = U64(0)
+  var _r12: U64 = U64(0)
+  var _r13: U64 = U64(0)
+  var _r14: U64 = U64(0)
+  var _r15: U64 = U64(0)
+  var _rdi: U64 = U64(0)
+  var _rsi: U64 = U64(0)
+  var _rbp: U64 = U64(0)
+  var _rbx: U64 = U64(0)
+  var _rdx: U64 = U64(0)
+  var _rax: U64 = U64(0)
+  var _rcx: U64 = U64(0)
+  var _rsp: U64 = U64(0)
+  var _rip: U64 = U64(0)
+  var _eflags: U64 = U64(0)
+  var _cs: U16 = U16(0)
+  var _gs: U16 = U16(0)
+  var _fs: U16 = U16(0)
+  var ___pad0: U16 = U16(0)
+  var _err: U64 = U64(0)
+  var _trapno: U64 = U64(0)
+  var _oldmask: U64 = U64(0)
+  var _cr2: U64 = U64(0)
+  var _: None = None
+  var ___reserved1: Pointer[U64] = Pointer[U64]
 
 
 /*
@@ -584,6 +760,9 @@ struct Sigcontext
      000192: [ArrayType size=(0-4)]->[FundamentalType(long unsigned int) size=64] -- UNSUPPORTED - FIXME: __glibc_reserved2  
 */
 struct Xsavehdr
+  var _xstate_bv: U64 = U64(0)
+  var ___glibc_reserved1: Pointer[U64] = Pointer[U64]
+  var ___glibc_reserved2: Pointer[U64] = Pointer[U64]
 
 
 /*
@@ -596,6 +775,7 @@ struct Xsavehdr
      000000: [ArrayType size=(0-63)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: ymmh_space  
 */
 struct Ymmhstate
+  var _ymmh_space: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -610,6 +790,9 @@ struct Ymmhstate
      004608: [Struct size=2048,fid: f57]: ymmh  
 */
 struct Xstate
+  var _fpstate: Fpstate = Fpstate
+  var _xstate_hdr: Xsavehdr = Xsavehdr
+  var _ymmh: Ymmhstate = Ymmhstate
 
 
 /*
@@ -624,6 +807,9 @@ struct Xstate
      000128: [FundamentalType(long unsigned int) size=64]: ss_size  
 */
 struct Anon718
+  var _ss_sp: Pointer[None] = Pointer[None]
+  var _ss_flags: I32 = I32(0)
+  var _ss_size: U64 = U64(0)
 
 
 /*
@@ -638,6 +824,9 @@ struct Anon718
      000080: [ArrayType size=(0-2)]->[FundamentalType(short unsigned int) size=16] -- UNSUPPORTED - FIXME: __glibc_reserved1  
 */
 struct Libcfpxreg
+  var _significand: Pointer[U16] = Pointer[U16]
+  var _exponent: U16 = U16(0)
+  var ___glibc_reserved1: Pointer[U16] = Pointer[U16]
 
 
 /*
@@ -650,6 +839,7 @@ struct Libcfpxreg
      000000: [ArrayType size=(0-3)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: element  
 */
 struct Libcxmmreg
+  var _element: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -672,6 +862,17 @@ struct Libcxmmreg
      003328: [ArrayType size=(0-23)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: __glibc_reserved1  
 */
 struct Libcfpstate
+  var _cwd: U16 = U16(0)
+  var _swd: U16 = U16(0)
+  var _ftw: U16 = U16(0)
+  var _fop: U16 = U16(0)
+  var _rip: U64 = U64(0)
+  var _rdp: U64 = U64(0)
+  var _mxcsr: U32 = U32(0)
+  var _mxcr_mask: U32 = U32(0)
+  var __st: Pointer[Libcfpxreg] = Pointer[Libcfpxreg]
+  var __xmm: Pointer[Libcxmmreg] = Pointer[Libcxmmreg]
+  var ___glibc_reserved1: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -686,6 +887,9 @@ struct Libcfpstate
      001536: [ArrayType size=(0-7)]->[FundamentalType(long long unsigned int) size=64] -- UNSUPPORTED - FIXME: __reserved1  
 */
 struct Anon726
+  var _gregs: Pointer[I64] = Pointer[I64]
+  var _fpregs: NullablePointer[Libcfpstate] = NullablePointer[Libcfpstate].none()
+  var ___reserved1: Pointer[U64] = Pointer[U64]
 
 
 /*
@@ -704,6 +908,13 @@ struct Anon726
      007488: [ArrayType size=(0-3)]->[FundamentalType(long long unsigned int) size=64] -- UNSUPPORTED - FIXME: __ssp  
 */
 struct Ucontextt
+  var _uc_flags: U64 = U64(0)
+  var _uc_link: NullablePointer[Ucontextt] = NullablePointer[Ucontextt].none()
+  var _uc_stack: Anon718 = Anon718
+  var _uc_mcontext: Anon726 = Anon726
+  var _uc_sigmask: Anon463 = Anon463
+  var ___fpregs_mem: Libcfpstate = Libcfpstate
+  var ___ssp: Pointer[U64] = Pointer[U64]
 
 
 /*
@@ -717,6 +928,8 @@ struct Ucontextt
      000064: [FundamentalType(int) size=32]: ss_onstack  
 */
 struct Sigstack
+  var _ss_sp: Pointer[None] = Pointer[None]
+  var _ss_onstack: I32 = I32(0)
 
 
 /*
@@ -730,6 +943,8 @@ struct Sigstack
      000064: [FundamentalType(long unsigned int) size=64]: iov_len  
 */
 struct Iovec
+  var _iov_base: Pointer[None] = Pointer[None]
+  var _iov_len: U64 = U64(0)
 
 
 /*
@@ -743,6 +958,8 @@ struct Iovec
      000016: [ArrayType size=(0-13)]->[FundamentalType(char) size=8] -- UNSUPPORTED - FIXME: sa_data  
 */
 struct Sockaddr
+  var _sa_family: U16 = U16(0)
+  var _sa_data: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -757,6 +974,9 @@ struct Sockaddr
      000960: [FundamentalType(long unsigned int) size=64]: __ss_align  
 */
 struct Sockaddrstorage
+  var _ss_family: U16 = U16(0)
+  var ___ss_padding: Pointer[U8] = Pointer[U8]
+  var ___ss_align: U64 = U64(0)
 
 
 /*
@@ -775,6 +995,13 @@ struct Sockaddrstorage
      000384: [FundamentalType(int) size=32]: msg_flags  
 */
 struct Msghdr
+  var _msg_name: Pointer[None] = Pointer[None]
+  var _msg_namelen: U32 = U32(0)
+  var _msg_iov: NullablePointer[Iovec] = NullablePointer[Iovec].none()
+  var _msg_iovlen: U64 = U64(0)
+  var _msg_control: Pointer[None] = Pointer[None]
+  var _msg_controllen: U64 = U64(0)
+  var _msg_flags: I32 = I32(0)
 
 
 /*
@@ -790,6 +1017,10 @@ struct Msghdr
      000128: [ArrayType size=(0-)]->[FundamentalType(unsigned char) size=8] -- UNSUPPORTED - FIXME: __cmsg_data  
 */
 struct Cmsghdr
+  var _cmsg_len: U64 = U64(0)
+  var _cmsg_level: I32 = I32(0)
+  var _cmsg_type: I32 = I32(0)
+  var ___cmsg_data: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -802,6 +1033,7 @@ struct Cmsghdr
      000000: [ArrayType size=(0-15)]->[FundamentalType(long unsigned int) size=64] -- UNSUPPORTED - FIXME: fds_bits  
 */
 struct Anon754
+  var _fds_bits: Pointer[U64] = Pointer[U64]
 
 
 /*
@@ -814,6 +1046,7 @@ struct Anon754
      000000: [ArrayType size=(0-1)]->[FundamentalType(int) size=32] -- UNSUPPORTED - FIXME: val  
 */
 struct Anon777
+  var _val: Pointer[I32] = Pointer[I32]
 
 
 /*
@@ -827,6 +1060,8 @@ struct Anon777
      000032: [FundamentalType(int) size=32]: l_linger  
 */
 struct Linger
+  var _l_onoff: I32 = I32(0)
+  var _l_linger: I32 = I32(0)
 
 
 /*
@@ -840,6 +1075,8 @@ struct Linger
      000016: [ArrayType size=(0-13)]->[FundamentalType(unsigned char) size=8] -- UNSUPPORTED - FIXME: sa_data  
 */
 struct Osockaddr
+  var _sa_family: U16 = U16(0)
+  var _sa_data: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -852,6 +1089,7 @@ struct Osockaddr
      000000: [FundamentalType(unsigned int) size=32]: s_addr  
 */
 struct Inaddr
+  var _s_addr: U32 = U32(0)
 
 
 /*
@@ -865,6 +1103,8 @@ struct Inaddr
      000032: [ArrayType size=(0-39)]->[FundamentalType(char) size=8] -- UNSUPPORTED - FIXME: ip_opts  
 */
 struct Ipopts
+  var _ip_dst: Inaddr = Inaddr
+  var _ip_opts: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -879,6 +1119,9 @@ struct Ipopts
      000064: [Struct size=32,fid: f72]: ipi_addr  
 */
 struct Inpktinfo
+  var _ipi_ifindex: I32 = I32(0)
+  var _ipi_spec_dst: Inaddr = Inaddr
+  var _ipi_addr: Inaddr = Inaddr
 
 
 /*
@@ -891,6 +1134,7 @@ struct Inpktinfo
      000000: [UNION size=128] -- UNSUPPORTED FIXME: __in6_u  
 */
 struct In6addr
+  var ___in6_u: None = None
 
 
 /*
@@ -906,6 +1150,10 @@ struct In6addr
      000064: [ArrayType size=(0-7)]->[FundamentalType(unsigned char) size=8] -- UNSUPPORTED - FIXME: sin_zero  
 */
 struct Sockaddrin
+  var _sin_family: U16 = U16(0)
+  var _sin_port: U16 = U16(0)
+  var _sin_addr: Inaddr = Inaddr
+  var _sin_zero: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -922,6 +1170,11 @@ struct Sockaddrin
      000192: [FundamentalType(unsigned int) size=32]: sin6_scope_id  
 */
 struct Sockaddrin6
+  var _sin6_family: U16 = U16(0)
+  var _sin6_port: U16 = U16(0)
+  var _sin6_flowinfo: U32 = U32(0)
+  var _sin6_addr: In6addr = In6addr
+  var _sin6_scope_id: U32 = U32(0)
 
 
 /*
@@ -935,6 +1188,8 @@ struct Sockaddrin6
      000032: [Struct size=32,fid: f72]: imr_interface  
 */
 struct Ipmreq
+  var _imr_multiaddr: Inaddr = Inaddr
+  var _imr_interface: Inaddr = Inaddr
 
 
 /*
@@ -949,6 +1204,9 @@ struct Ipmreq
      000064: [FundamentalType(int) size=32]: imr_ifindex  
 */
 struct Ipmreqn
+  var _imr_multiaddr: Inaddr = Inaddr
+  var _imr_address: Inaddr = Inaddr
+  var _imr_ifindex: I32 = I32(0)
 
 
 /*
@@ -963,6 +1221,9 @@ struct Ipmreqn
      000064: [Struct size=32,fid: f72]: imr_sourceaddr  
 */
 struct Ipmreqsource
+  var _imr_multiaddr: Inaddr = Inaddr
+  var _imr_interface: Inaddr = Inaddr
+  var _imr_sourceaddr: Inaddr = Inaddr
 
 
 /*
@@ -976,6 +1237,8 @@ struct Ipmreqsource
      000128: [FundamentalType(unsigned int) size=32]: ipv6mr_interface  
 */
 struct Ipv6mreq
+  var _ipv6mr_multiaddr: In6addr = In6addr
+  var _ipv6mr_interface: U32 = U32(0)
 
 
 /*
@@ -989,6 +1252,8 @@ struct Ipv6mreq
      000064: [Struct size=1024,fid: f64]: gr_group  
 */
 struct Groupreq
+  var _gr_interface: U32 = U32(0)
+  var _gr_group: Sockaddrstorage = Sockaddrstorage
 
 
 /*
@@ -1003,6 +1268,9 @@ struct Groupreq
      001088: [Struct size=1024,fid: f64]: gsr_source  
 */
 struct Groupsourcereq
+  var _gsr_interface: U32 = U32(0)
+  var _gsr_group: Sockaddrstorage = Sockaddrstorage
+  var _gsr_source: Sockaddrstorage = Sockaddrstorage
 
 
 /*
@@ -1019,6 +1287,11 @@ struct Groupsourcereq
      000128: [ArrayType size=(0-0)]->[Struct size=32,fid: f72] -- UNSUPPORTED - FIXME: imsf_slist  
 */
 struct Ipmsfilter
+  var _imsf_multiaddr: Inaddr = Inaddr
+  var _imsf_interface: Inaddr = Inaddr
+  var _imsf_fmode: U32 = U32(0)
+  var _imsf_numsrc: U32 = U32(0)
+  var _imsf_slist: Pointer[Inaddr] = Pointer[Inaddr]
 
 
 /*
@@ -1035,6 +1308,11 @@ struct Ipmsfilter
      001152: [ArrayType size=(0-0)]->[Struct size=1024,fid: f64] -- UNSUPPORTED - FIXME: gf_slist  
 */
 struct Groupfilter
+  var _gf_interface: U32 = U32(0)
+  var _gf_group: Sockaddrstorage = Sockaddrstorage
+  var _gf_fmode: U32 = U32(0)
+  var _gf_numsrc: U32 = U32(0)
+  var _gf_slist: Pointer[Sockaddrstorage] = Pointer[Sockaddrstorage]
 
 
 /*
@@ -1344,6 +1622,7 @@ struct Ncplaneoptions
      000000: [ArrayType size=(0-255)]->[FundamentalType(unsigned int) size=32] -- UNSUPPORTED - FIXME: chans  
 */
 struct Ncpalette
+  var _chans: Pointer[U32] = Pointer[U32]
 
 
 /*
@@ -1418,6 +1697,42 @@ struct Nccapabilities
      002240: [FundamentalType(unsigned int) size=32]: planes  
 */
 struct Ncstats
+  var _renders: U64 = U64(0)
+  var _writeouts: U64 = U64(0)
+  var _failed_renders: U64 = U64(0)
+  var _failed_writeouts: U64 = U64(0)
+  var _raster_bytes: U64 = U64(0)
+  var _raster_max_bytes: I64 = I64(0)
+  var _raster_min_bytes: I64 = I64(0)
+  var _render_ns: U64 = U64(0)
+  var _render_max_ns: I64 = I64(0)
+  var _render_min_ns: I64 = I64(0)
+  var _raster_ns: U64 = U64(0)
+  var _raster_max_ns: I64 = I64(0)
+  var _raster_min_ns: I64 = I64(0)
+  var _writeout_ns: U64 = U64(0)
+  var _writeout_max_ns: I64 = I64(0)
+  var _writeout_min_ns: I64 = I64(0)
+  var _cellelisions: U64 = U64(0)
+  var _cellemissions: U64 = U64(0)
+  var _fgelisions: U64 = U64(0)
+  var _fgemissions: U64 = U64(0)
+  var _bgelisions: U64 = U64(0)
+  var _bgemissions: U64 = U64(0)
+  var _defaultelisions: U64 = U64(0)
+  var _defaultemissions: U64 = U64(0)
+  var _refreshes: U64 = U64(0)
+  var _sprixelemissions: U64 = U64(0)
+  var _sprixelelisions: U64 = U64(0)
+  var _sprixelbytes: U64 = U64(0)
+  var _appsync_updates: U64 = U64(0)
+  var _input_errors: U64 = U64(0)
+  var _input_events: U64 = U64(0)
+  var _hpa_gratuitous: U64 = U64(0)
+  var _cell_geo_changes: U64 = U64(0)
+  var _pixel_geo_changes: U64 = U64(0)
+  var _fbbytes: U64 = U64(0)
+  var _planes: U32 = U32(0)
 
 
 /*
@@ -1442,6 +1757,19 @@ struct Ncstats
      000448: [FundamentalType(unsigned int) size=32]: pxoffx  
 */
 struct Ncvisualoptions
+  var _n: NullablePointer[Ncplane] = NullablePointer[Ncplane].none()
+  var _scaling: I32 = I32(0)
+  var _y: I32 = I32(0)
+  var _x: I32 = I32(0)
+  var _begy: U32 = U32(0)
+  var _begx: U32 = U32(0)
+  var _leny: U32 = U32(0)
+  var _lenx: U32 = U32(0)
+  var _blitter: I32 = I32(0)
+  var _flags: U64 = U64(0)
+  var _transcolor: U32 = U32(0)
+  var _pxoffy: U32 = U32(0)
+  var _pxoffx: U32 = U32(0)
 
 
 /*
@@ -1470,6 +1798,23 @@ struct Ncvisualoptions
      000512: [Enumeration size=32,fid: f75]: blitter  
 */
 struct Ncvgeom
+  var _pixy: U32 = U32(0)
+  var _pixx: U32 = U32(0)
+  var _cdimy: U32 = U32(0)
+  var _cdimx: U32 = U32(0)
+  var _rpixy: U32 = U32(0)
+  var _rpixx: U32 = U32(0)
+  var _rcelly: U32 = U32(0)
+  var _rcellx: U32 = U32(0)
+  var _scaley: U32 = U32(0)
+  var _scalex: U32 = U32(0)
+  var _begy: U32 = U32(0)
+  var _begx: U32 = U32(0)
+  var _leny: U32 = U32(0)
+  var _lenx: U32 = U32(0)
+  var _maxpixely: U32 = U32(0)
+  var _maxpixelx: U32 = U32(0)
+  var _blitter: I32 = I32(0)
 
 
 /*
@@ -1487,6 +1832,12 @@ struct Ncvgeom
      000320: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncreeloptions
+  var _bordermask: U32 = U32(0)
+  var _borderchan: U64 = U64(0)
+  var _tabletmask: U32 = U32(0)
+  var _tabletchan: U64 = U64(0)
+  var _focusedchan: U64 = U64(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1500,6 +1851,8 @@ struct Ncreeloptions
      000064: [PointerType size=64]->[FundamentalType(char) size=8]: desc  
 */
 struct Ncselectoritem
+  var _option: Pointer[U8] = Pointer[U8]
+  var _desc: Pointer[U8] = Pointer[U8]
 
 
 /*
@@ -1523,6 +1876,18 @@ struct Ncselectoritem
      000640: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncselectoroptions
+  var _title: Pointer[U8] = Pointer[U8]
+  var _secondary: Pointer[U8] = Pointer[U8]
+  var _footer: Pointer[U8] = Pointer[U8]
+  var _items: NullablePointer[Ncselectoritem] = NullablePointer[Ncselectoritem].none()
+  var _defidx: U32 = U32(0)
+  var _maxdisplay: U32 = U32(0)
+  var _opchannels: U64 = U64(0)
+  var _descchannels: U64 = U64(0)
+  var _titlechannels: U64 = U64(0)
+  var _footchannels: U64 = U64(0)
+  var _boxchannels: U64 = U64(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1537,6 +1902,9 @@ struct Ncselectoroptions
      000128: [FundamentalType(bool) size=8]: selected  
 */
 struct Ncmselectoritem
+  var _option: Pointer[U8] = Pointer[U8]
+  var _desc: Pointer[U8] = Pointer[U8]
+  var _selected: Bool = Bool
 
 
 /*
@@ -1559,6 +1927,17 @@ struct Ncmselectoritem
      000640: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncmultiselectoroptions
+  var _title: Pointer[U8] = Pointer[U8]
+  var _secondary: Pointer[U8] = Pointer[U8]
+  var _footer: Pointer[U8] = Pointer[U8]
+  var _items: NullablePointer[Ncmselectoritem] = NullablePointer[Ncmselectoritem].none()
+  var _maxdisplay: U32 = U32(0)
+  var _opchannels: U64 = U64(0)
+  var _descchannels: U64 = U64(0)
+  var _titlechannels: U64 = U64(0)
+  var _footchannels: U64 = U64(0)
+  var _boxchannels: U64 = U64(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1573,6 +1952,9 @@ struct Ncmultiselectoroptions
      000128: [FundamentalType(unsigned int) size=32]: subcount  
 */
 struct Nctreeitem
+  var _curry: Pointer[None] = Pointer[None]
+  var _subs: NullablePointer[Nctreeitem] = NullablePointer[Nctreeitem].none()
+  var _subcount: U32 = U32(0)
 
 
 /*
@@ -1589,6 +1971,11 @@ struct Nctreeitem
      000256: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Nctreeoptions
+  var _items: NullablePointer[Nctreeitem] = NullablePointer[Nctreeitem].none()
+  var _count: U32 = U32(0)
+  var _nctreecb: Pointer[None] = Pointer[None]
+  var _indentcols: I32 = I32(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1613,6 +2000,8 @@ struct Nctree
      000064: [Struct size=288,fid: f75]: shortcut  
 */
 struct Ncmenuitem
+  var _desc: Pointer[U8] = Pointer[U8]
+  var _shortcut: Ncinput = Ncinput
 
 
 /*
@@ -1628,6 +2017,10 @@ struct Ncmenuitem
      000192: [Struct size=288,fid: f75]: shortcut  
 */
 struct Ncmenusection
+  var _name: Pointer[U8] = Pointer[U8]
+  var _itemcount: I32 = I32(0)
+  var _items: NullablePointer[Ncmenuitem] = NullablePointer[Ncmenuitem].none()
+  var _shortcut: Ncinput = Ncinput
 
 
 /*
@@ -1644,6 +2037,11 @@ struct Ncmenusection
      000256: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncmenuoptions
+  var _sections: NullablePointer[Ncmenusection] = NullablePointer[Ncmenusection].none()
+  var _sectioncount: I32 = I32(0)
+  var _headerchannels: U64 = U64(0)
+  var _sectionchannels: U64 = U64(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1671,6 +2069,11 @@ struct Ncmenu
      000128: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncprogbaroptions
+  var _ulchannel: U32 = U32(0)
+  var _urchannel: U32 = U32(0)
+  var _blchannel: U32 = U32(0)
+  var _brchannel: U32 = U32(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1687,6 +2090,11 @@ struct Ncprogbaroptions
      000256: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Nctabbedoptions
+  var _selchan: U64 = U64(0)
+  var _hdrchan: U64 = U64(0)
+  var _sepchan: U64 = U64(0)
+  var _separator: Pointer[U8] = Pointer[U8]
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1705,6 +2113,13 @@ struct Nctabbedoptions
      000320: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncplotoptions
+  var _maxchannels: U64 = U64(0)
+  var _minchannels: U64 = U64(0)
+  var _legendstyle: U16 = U16(0)
+  var _gridtype: I32 = I32(0)
+  var _rangex: I32 = I32(0)
+  var _title: Pointer[U8] = Pointer[U8]
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1719,6 +2134,9 @@ struct Ncplotoptions
      000128: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncfdplaneoptions
+  var _curry: Pointer[None] = Pointer[None]
+  var _follow: Bool = Bool
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1733,6 +2151,9 @@ struct Ncfdplaneoptions
      000128: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncsubprocoptions
+  var _curry: Pointer[None] = Pointer[None]
+  var _restart_period: U64 = U64(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1747,6 +2168,9 @@ struct Ncsubprocoptions
      000128: [FundamentalType(long unsigned int) size=64]: flags  
 */
 struct Ncreaderoptions
+  var _tchannels: U64 = U64(0)
+  var _tattrword: U32 = U32(0)
+  var _flags: U64 = U64(0)
 
 
 /*
@@ -1762,6 +2186,10 @@ struct Ncreaderoptions
      000192: [FundamentalType(long int) size=64]: length  
 */
 struct NSConstantStringtag
+  var _isa: Pointer[I32] = Pointer[I32]
+  var _flags: I32 = I32(0)
+  var _str: Pointer[U8] = Pointer[U8]
+  var _length: I64 = I64(0)
 
 
 /*
@@ -1775,6 +2203,8 @@ struct NSConstantStringtag
      000032: [FundamentalType(unsigned int) size=32]: __high  
 */
 struct Anon1609
+  var ___low: U32 = U32(0)
+  var ___high: U32 = U32(0)
 
 
 /*
@@ -1790,6 +2220,10 @@ struct Anon1609
      000128: [PointerType size=64]->[FundamentalType(void) size=0]: reg_save_area  
 */
 struct Valisttag
+  var _gp_offset: U32 = U32(0)
+  var _fp_offset: U32 = U32(0)
+  var _overflow_arg_area: Pointer[None] = Pointer[None]
+  var _reg_save_area: Pointer[None] = Pointer[None]
 
 
 /*
@@ -1803,6 +2237,8 @@ struct Valisttag
      000064: [PointerType size=64]->[UNION size=448] -- UNSUPPORTED FIXME: _attribute  
 */
 struct Anon2203
+  var __function: Pointer[None] = Pointer[None]
+  var __attribute: Pointer[None] = Pointer[None]
 
 
 /*
@@ -1816,6 +2252,8 @@ struct Anon2203
      000032: [FundamentalType(unsigned int) size=32]: si_uid  
 */
 struct Anon2253
+  var _si_pid: I32 = I32(0)
+  var _si_uid: U32 = U32(0)
 
 
 /*
@@ -1830,6 +2268,9 @@ struct Anon2253
      000064: [UNION size=64] -- UNSUPPORTED FIXME: si_sigval  
 */
 struct Anon2255
+  var _si_tid: I32 = I32(0)
+  var _si_overrun: I32 = I32(0)
+  var _si_sigval: None = None
 
 
 /*
@@ -1844,6 +2285,9 @@ struct Anon2255
      000064: [UNION size=64] -- UNSUPPORTED FIXME: si_sigval  
 */
 struct Anon2257
+  var _si_pid: I32 = I32(0)
+  var _si_uid: U32 = U32(0)
+  var _si_sigval: None = None
 
 
 /*
@@ -1860,6 +2304,11 @@ struct Anon2257
      000192: [FundamentalType(long int) size=64]: si_stime  
 */
 struct Anon2259
+  var _si_pid: I32 = I32(0)
+  var _si_uid: U32 = U32(0)
+  var _si_status: I32 = I32(0)
+  var _si_utime: I64 = I64(0)
+  var _si_stime: I64 = I64(0)
 
 
 /*
@@ -1874,6 +2323,9 @@ struct Anon2259
      000128: [UNION size=128] -- UNSUPPORTED FIXME: _bounds  
 */
 struct Anon2261
+  var _si_addr: Pointer[None] = Pointer[None]
+  var _si_addr_lsb: I16 = I16(0)
+  var __bounds: None = None
 
 
 /*
@@ -1887,6 +2339,8 @@ struct Anon2261
      000064: [FundamentalType(int) size=32]: si_fd  
 */
 struct Anon2263
+  var _si_band: I64 = I64(0)
+  var _si_fd: I32 = I32(0)
 
 
 /*
@@ -1901,6 +2355,9 @@ struct Anon2263
      000096: [FundamentalType(unsigned int) size=32]: _arch  
 */
 struct Anon2265
+  var __call_addr: Pointer[None] = Pointer[None]
+  var __syscall: I32 = I32(0)
+  var __arch: U32 = U32(0)
 
 
 /*
@@ -1914,6 +2371,8 @@ struct Anon2265
      000064: [PointerType size=64]->[FundamentalType(void) size=0]: _upper  
 */
 struct Anon2415
+  var __lower: Pointer[None] = Pointer[None]
+  var __upper: Pointer[None] = Pointer[None]
 
 
 /*

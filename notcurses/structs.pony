@@ -36,7 +36,7 @@ struct Nccell
      000256: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Notcursesoptions
-  var termtype: Pointer[U8] = Pointer[U8]
+  var termtype: Pointer[U8] tag = Pointer[U8]
   var loglevel: I32 = I32(0)
   var margin_t: U32 = U32(0)
   var margin_r: U32 = U32(0)
@@ -106,12 +106,38 @@ struct Ncplaneoptions
   var x: I32 = I32(0)
   var rows: U32 = U32(0)
   var cols: U32 = U32(0)
-  var userptr: Pointer[None] = Pointer[None]
-  var name: Pointer[U8] = Pointer[U8]
-  var resizecb: Pointer[None] = Pointer[None]
+  var userptr: NotCursesResizeCallback tag = NullResizeCallback
+  var name: Pointer[U8] tag = Pointer[U8]
+  var resizecb: @{(NcPlaneT): I32} = @{(n: NcPlaneT): I32 => 0}
   var flags: U64 = U64(0)
   var margin_b: U32 = U32(0)
   var margin_r: U32 = U32(0)
+
+  new create(
+    y': I32 = 0,
+    x': I32 = 0,
+    rows': U32 = 0,
+    cols': U32 = 0,
+    userptr': ResizeCallbackWrapper = ResizeCallbackWrapper(NullResizeCallback),
+    name': Pointer[U8] tag = Pointer[U8],
+    resizecb': @{(NcPlaneT): I32} = @{(n: NcPlaneT): I32 => 
+      var rawcb: NotCursesResizeCallback = NotCursesFFI.plane_userptr(NullablePointer[NcPlaneT](n))
+      rawcb._resize_callback()
+      0
+  },
+    flags': U64 = 0,
+    margin_b': U32 = 0,
+    margin_r': U32 = 0) =>
+    y = y'
+    x = x'
+    rows = rows'
+    cols = cols'
+    userptr = userptr'.cb
+    name = name'
+    resizecb = resizecb'
+    flags = flags'
+    margin_b = margin_b'
+    margin_r = margin_r'
 
 
 /*
@@ -139,3 +165,47 @@ struct Nccapabilities
   var quadrants: U8 = U8(0)
   var sextants: U8 = U8(0)
   var braille: U8 = U8(0)
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:3678
+  Original Name: ncreel_options
+  Struct Size (bits):  384
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [FundamentalType(unsigned int) size=32]: bordermask
+     000064: [FundamentalType(long unsigned int) size=64]: borderchan
+     000128: [FundamentalType(unsigned int) size=32]: tabletmask
+     000192: [FundamentalType(long unsigned int) size=64]: tabletchan
+     000256: [FundamentalType(long unsigned int) size=64]: focusedchan
+     000320: [FundamentalType(long unsigned int) size=64]: flags
+*/
+struct Ncreeloptions
+  var bordermask: U32 = U32(0)
+  var borderchan: U64 = U64(0)
+  var tabletmask: U32 = U32(0)
+  var tabletchan: U64 = U64(0)
+  var focusedchan: U64 = U64(0)
+  var flags: U64 = U64(0)
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:4184
+  Original Name: ncprogbar_options
+  Struct Size (bits):  192
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [FundamentalType(unsigned int) size=32]: ulchannel
+     000032: [FundamentalType(unsigned int) size=32]: urchannel
+     000064: [FundamentalType(unsigned int) size=32]: blchannel
+     000096: [FundamentalType(unsigned int) size=32]: brchannel
+     000128: [FundamentalType(long unsigned int) size=64]: flags
+*/
+struct Ncprogbaroptions
+  var ulchannel: U32 = U32(0)
+  var urchannel: U32 = U32(0)
+  var blchannel: U32 = U32(0)
+  var brchannel: U32 = U32(0)
+  var flags: U64 = U64(0)

@@ -32,6 +32,8 @@ endif
 PONYC := $(PONYC) $(LINKER)
 
 SOURCE_FILES := $(shell find $(SRC_DIR) -name *.pony)
+DEMO_FILES := $(shell find demo -name *.pony 2>/dev/null)
+demo_binary := $(BUILD_DIR)/demo
 
 test: unit-tests
 
@@ -42,6 +44,26 @@ unit-tests: $(tests_binary)
 
 $(tests_binary): $(SOURCE_FILES) | $(BUILD_DIR) dependencies
 	${PONYC} -o ${BUILD_DIR} $(SRC_DIR)
+
+demo: $(demo_binary)
+	$^
+
+$(demo_binary): $(DEMO_FILES) $(SOURCE_FILES) | $(BUILD_DIR) dependencies
+	${PONYC} -o ${BUILD_DIR} demo
+
+EXAMPLES := animate grid highcon qrcode reel sliders uniblock whiteout
+
+examples: $(addprefix example-,$(EXAMPLES))
+
+define EXAMPLE_template
+example-$(1): $(BUILD_DIR)/$(1)
+	$$^
+
+$(BUILD_DIR)/$(1): $(shell find examples/$(1) -name *.pony 2>/dev/null) $(SOURCE_FILES) | $(BUILD_DIR) dependencies
+	$${PONYC} -o $${BUILD_DIR} -b $(1) examples/$(1)
+endef
+
+$(foreach ex,$(EXAMPLES),$(eval $(call EXAMPLE_template,$(ex))))
 
 clean:
 	$(CLEAN_DEPENDENCIES_WITH)
@@ -68,4 +90,4 @@ all: ci
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-.PHONY: all clean realclean TAGS test
+.PHONY: all clean realclean TAGS test examples $(addprefix example-,$(EXAMPLES))
