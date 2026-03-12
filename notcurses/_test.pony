@@ -9,6 +9,7 @@ actor Main is TestList
 
   fun tag tests(test: PonyTest) =>
     test(_TestLinkage)
+    test(_TestInputClassifier)
 
 class iso _TestLinkage is UnitTest
   fun name(): String => "notcurses/linkage"
@@ -43,4 +44,71 @@ class iso _TestLinkage is UnitTest
       @notcurses_stop(nc)
     else
       h.log("notcurses_init returned null (no TTY), linkage still verified")
+    end
+
+class iso _TestInputClassifier is UnitTest
+  fun name(): String => "notcurses/input-classifier"
+
+  fun apply(h: TestHelper) =>
+    // Key press event
+    var ni: Ncinput ref = Ncinput
+    ni.id = 113  // 'q'
+    ni.evtype = NcInputType.press()
+    ni.modifiers = 0
+    match InputClassifier.classify(ni)
+    | let k: KeyEvent =>
+      h.assert_eq[U32](k.codepoint, 113)
+      h.assert_is[InputEventType](k.event_type, InputPress)
+    else
+      h.fail("Expected KeyEvent")
+    end
+
+    // Mouse button event — NCKEY_BUTTON1 = 1115201
+    ni = Ncinput
+    ni.id = 1115201
+    ni.y = 5
+    ni.x = 10
+    ni.evtype = NcInputType.press()
+    ni.modifiers = 0
+    match InputClassifier.classify(ni)
+    | let m: MouseEvent =>
+      h.assert_eq[I32](m.y, 5)
+      h.assert_eq[I32](m.x, 10)
+      h.assert_eq[U32](m.button, 1115201)
+      h.assert_is[InputEventType](m.event_type, InputPress)
+    else
+      h.fail("Expected MouseEvent")
+    end
+
+    // Resize event — NCKEY_RESIZE = 1115001
+    ni = Ncinput
+    ni.id = 1115001
+    ni.evtype = NcInputType.press()
+    match InputClassifier.classify(ni)
+    | let r: ResizeEvent => None  // correct
+    else
+      h.fail("Expected ResizeEvent")
+    end
+
+    // Unknown event (id = 0)
+    ni = Ncinput
+    ni.id = 0
+    match InputClassifier.classify(ni)
+    | let u: UnknownEvent => None  // correct
+    else
+      h.fail("Expected UnknownEvent for id=0")
+    end
+
+    // Repeat event type
+    ni = Ncinput
+    ni.id = 65  // 'A'
+    ni.evtype = NcInputType.repeat_input()
+    ni.modifiers = NcKeyMod.shift()
+    match InputClassifier.classify(ni)
+    | let k: KeyEvent =>
+      h.assert_eq[U32](k.codepoint, 65)
+      h.assert_is[InputEventType](k.event_type, InputRepeat)
+      h.assert_eq[U32](k.modifiers, NcKeyMod.shift())
+    else
+      h.fail("Expected KeyEvent for repeat")
     end
