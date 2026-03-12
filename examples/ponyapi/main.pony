@@ -1,60 +1,51 @@
 use "../../notcurses"
-use "debug"
 
 actor Main
-  var env: Env
+  new create(env: Env) =>
+    MyApp(env)
 
-  new create(env': Env) =>
-    env = env'
-    var options: Notcursesoptions iso = recover iso
-      var o: Notcursesoptions = Notcursesoptions
-      o.flags = (
-        NcOption.suppress_banners() or
-        NcOption.cli_mode())
-      o
-    end
-    let q: TestCtx = TestCtx(consume options, env)
+actor MyApp is NotCursesActor
+  var _env: Env
+  var _nc: NotCurses = NotCurses.none()
+  var _content: NotCursesPlane = NotCursesPlane.none()
 
-
-actor TestCtx is (NotCursesActor & NotCursesResizeCallback)
-  var env: Env
-  var notcurses: NotCurses = NotCurses.none()
-  var stdplane: NotCursesPlane = NotCursesPlane.none()
-  var txtplane: NotCursesPlane = NotCursesPlane.none()
-
-  new create(options: Notcursesoptions iso, env': Env) =>
-    env = env'
+  new create(env: Env) =>
+    _env = env
     try
-      notcurses = NotCurses(this)?
-      stdplane = notcurses.stdplane()
-
-      txtplane = stdplane.child(Ncplaneoptions(
-        where
-        y' = 2,
-        x' = 2,
-        rows' = 15,
-        cols' = 15,
-        userptr' = ResizeCallbackWrapper(this)
-        ))
+      _nc = NotCurses(this)?
     else
-      env.out.print("We failed to initialize - exitting")
+      env.out.print("Failed to initialize notcurses")
     end
 
   be _initiate() =>
-    stdplane.perimeter_rounded(NcBoxCtl.all_borders())
-    stdplane.home()
-    stdplane.putstr_yx("Main Window", 0, 2)
-    txtplane.dim_yx()
-    txtplane.puttext("Hello, from notcurses - yay?" + NcOption.cli_mode().string())
-    notcurses.render()
+    try
+      let std = _nc.stdplane()
 
-  be on_resize() => None
+      _content = std.child(Ncplaneoptions(where
+        y' = 2, x' = 2, rows' = 10, cols' = 40
+      ))?
 
-  be _exit() => None
-    if (notcurses.stop() != 0) then
-      env.out.print("I failed to shutdown")
+      std.style().>bold().>fg(200, 200, 200).apply()?
+      std.box_draw().perimeter_rounded(NcBoxCtl.all_borders())?
+      std.home()
+      std.output().putstr_yx("Main Window", 0, 2)?
+
+      _content.style().>fg(0, 255, 128).apply()?
+      _content.output().putstr("Hello from notcurses!")?
+
+      _nc.render()?
+    else
+      _env.out.print("Drawing failed")
     end
 
+  be input_received(event: InputEvent) =>
+    match event
+    | let k: KeyEvent =>
+      if k.codepoint == 113 then  // 'q'
+        try _nc.stop()? end
+      end
+    end
 
+  be _exit() => None
 
-  fun ref _notcurses(): NotCurses => notcurses
+  fun ref _notcurses(): NotCurses => _nc
