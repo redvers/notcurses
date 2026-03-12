@@ -36,7 +36,7 @@ class NotCurses
     (enclosing as NotCursesActor)._initiate()
 
   fun stdplane(): NotCursesPlane =>
-    NotCursesPlane.from_ptr(NotCursesFFI.stdplane(ptr))
+    NotCursesPlane.from_ptr(NotCursesFFI.stdplane(ptr), true)
 
   fun dim_yx(): (U32, U32) =>
     NotCursesFFI.term_dim_yx(ptr)
