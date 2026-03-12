@@ -10,6 +10,7 @@ actor Main is TestList
   fun tag tests(test: PonyTest) =>
     test(_TestLinkage)
     test(_TestInputClassifier)
+    test(_TestStyleBuilder)
 
 class iso _TestLinkage is UnitTest
   fun name(): String => "notcurses/linkage"
@@ -111,4 +112,32 @@ class iso _TestInputClassifier is UnitTest
       h.assert_eq[U32](k.modifiers, NcKeyMod.shift())
     else
       h.fail("Expected KeyEvent for repeat")
+    end
+
+class iso _TestStyleBuilder is UnitTest
+  fun name(): String => "notcurses/style-builder"
+
+  fun apply(h: TestHelper) =>
+    // Test style accumulation
+    let builder = PlaneStyleBuilder._for_test()
+    builder.>bold().>italic()
+    h.assert_eq[U32](builder._test_styles(),
+      NcStyle.bold() or NcStyle.italic())
+
+    // Test color accumulation
+    builder.fg(255, 0, 128)
+    match builder._test_fg()
+    | let rgb: U32 =>
+      h.assert_eq[U32](rgb, (U32(255) << 16) or (U32(0) << 8) or U32(128))
+    else
+      h.fail("Expected fg color to be set")
+    end
+
+    // Test fresh builder starts empty
+    let builder2 = PlaneStyleBuilder._for_test()
+    h.assert_eq[U32](builder2._test_styles(), 0)
+    match builder2._test_fg()
+    | None => None
+    else
+      h.fail("Expected fg color to be None on fresh builder")
     end
