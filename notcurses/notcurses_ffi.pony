@@ -138,6 +138,7 @@ use @ncprogbar_create[NullablePointer[NcProgbar]](
 use @ncprogbar_destroy[None](n: NullablePointer[NcProgbar] tag)
 use @ncprogbar_plane[NullablePointer[NcPlaneT]](n: NullablePointer[NcProgbar] tag)
 use @ncprogbar_set_progress[I32](n: NullablePointer[NcProgbar] tag, p: F64)
+use @ncprogbar_progress[F64](n: NullablePointer[NcProgbar] tag)
 
 // Widgets — Reel
 use @ncreel_create[NullablePointer[NcReel]](
@@ -157,6 +158,43 @@ use @ncreel_tabletcount[I32](nr: NullablePointer[NcReel] tag)
 use @ncreel_plane[NullablePointer[NcPlaneT]](nr: NullablePointer[NcReel] tag)
 use @nctablet_plane[NullablePointer[NcPlaneT]](t: NullablePointer[NcTablet] tag)
 use @nctablet_userptr[Pointer[None]](t: NullablePointer[NcTablet] tag)
+
+// Widgets — Selector
+use @ncselector_create[NullablePointer[NcSelector]](
+  n: NullablePointer[NcPlaneT] tag, opts: NullablePointer[Ncselectoroptions] tag)
+use @ncselector_destroy[None](
+  n: NullablePointer[NcSelector] tag, item: Pointer[Pointer[U8]] tag)
+use @ncselector_plane[NullablePointer[NcPlaneT]](n: NullablePointer[NcSelector] tag)
+use @ncselector_selected[Pointer[U8]](n: NullablePointer[NcSelector] tag)
+use @ncselector_additem[I32](
+  n: NullablePointer[NcSelector] tag, item: NullablePointer[Ncselectoritem] tag)
+use @ncselector_delitem[I32](
+  n: NullablePointer[NcSelector] tag, item: Pointer[U8] tag)
+use @ncselector_nextitem[Pointer[U8]](n: NullablePointer[NcSelector] tag)
+use @ncselector_previtem[Pointer[U8]](n: NullablePointer[NcSelector] tag)
+use @ncselector_offer_input[Bool](
+  n: NullablePointer[NcSelector] tag, ni: NullablePointer[Ncinput] tag)
+
+// Widgets — Multiselector
+use @ncmultiselector_create[NullablePointer[NcMultiselector]](
+  n: NullablePointer[NcPlaneT] tag, opts: NullablePointer[Ncmultiselectoroptions] tag)
+use @ncmultiselector_destroy[None](n: NullablePointer[NcMultiselector] tag)
+use @ncmultiselector_plane[NullablePointer[NcPlaneT]](n: NullablePointer[NcMultiselector] tag)
+use @ncmultiselector_selected[I32](
+  n: NullablePointer[NcMultiselector] tag, selected: Pointer[Bool] tag, count: U32)
+use @ncmultiselector_offer_input[Bool](
+  n: NullablePointer[NcMultiselector] tag, ni: NullablePointer[Ncinput] tag)
+
+// Widgets — Reader
+use @ncreader_create[NullablePointer[NcReader]](
+  n: NullablePointer[NcPlaneT] tag, opts: NullablePointer[Ncreaderoptions] tag)
+use @ncreader_destroy[None](
+  n: NullablePointer[NcReader] tag, contents: Pointer[Pointer[U8]] tag)
+use @ncreader_plane[NullablePointer[NcPlaneT]](n: NullablePointer[NcReader] tag)
+use @ncreader_contents[Pointer[U8]](n: NullablePointer[NcReader] tag)
+use @ncreader_clear[I32](n: NullablePointer[NcReader] tag)
+use @ncreader_offer_input[Bool](
+  n: NullablePointer[NcReader] tag, ni: NullablePointer[Ncinput] tag)
 
 // Utility
 use @ncstrwidth[I32](
@@ -423,3 +461,79 @@ primitive NotCursesFFI
 
   fun tablet_plane(t: NullablePointer[NcTablet] tag): NullablePointer[NcPlaneT] =>
     @nctablet_plane(t)
+
+  // Widgets — Progress Bar (addition)
+  fun progbar_progress(n: NullablePointer[NcProgbar] tag): F64 =>
+    @ncprogbar_progress(n)
+
+  // Widgets — Selector
+  fun selector_create(n: NullablePointer[NcPlaneT] tag,
+    opts: NullablePointer[Ncselectoroptions]): NullablePointer[NcSelector]
+  =>
+    @ncselector_create(n, opts)
+
+  fun selector_destroy(n: NullablePointer[NcSelector] tag) =>
+    @ncselector_destroy(n, Pointer[Pointer[U8]])
+
+  fun selector_selected(n: NullablePointer[NcSelector] tag): Pointer[U8] =>
+    @ncselector_selected(n)
+
+  fun selector_additem(n: NullablePointer[NcSelector] tag,
+    item: NullablePointer[Ncselectoritem]): I32
+  =>
+    @ncselector_additem(n, item)
+
+  fun selector_delitem(n: NullablePointer[NcSelector] tag,
+    item: Pointer[U8] tag): I32
+  =>
+    @ncselector_delitem(n, item)
+
+  fun selector_nextitem(n: NullablePointer[NcSelector] tag): Pointer[U8] =>
+    @ncselector_nextitem(n)
+
+  fun selector_previtem(n: NullablePointer[NcSelector] tag): Pointer[U8] =>
+    @ncselector_previtem(n)
+
+  fun selector_offer_input(n: NullablePointer[NcSelector] tag,
+    ni: NullablePointer[Ncinput]): Bool
+  =>
+    @ncselector_offer_input(n, ni)
+
+  // Widgets — Multiselector
+  fun multiselector_create(n: NullablePointer[NcPlaneT] tag,
+    opts: NullablePointer[Ncmultiselectoroptions]): NullablePointer[NcMultiselector]
+  =>
+    @ncmultiselector_create(n, opts)
+
+  fun multiselector_destroy(n: NullablePointer[NcMultiselector] tag) =>
+    @ncmultiselector_destroy(n)
+
+  fun multiselector_selected(n: NullablePointer[NcMultiselector] tag,
+    selected: Pointer[Bool], count: U32): I32
+  =>
+    @ncmultiselector_selected(n, selected, count)
+
+  fun multiselector_offer_input(n: NullablePointer[NcMultiselector] tag,
+    ni: NullablePointer[Ncinput]): Bool
+  =>
+    @ncmultiselector_offer_input(n, ni)
+
+  // Widgets — Reader
+  fun reader_create(n: NullablePointer[NcPlaneT] tag,
+    opts: NullablePointer[Ncreaderoptions]): NullablePointer[NcReader]
+  =>
+    @ncreader_create(n, opts)
+
+  fun reader_destroy(n: NullablePointer[NcReader] tag) =>
+    @ncreader_destroy(n, Pointer[Pointer[U8]])
+
+  fun reader_contents(n: NullablePointer[NcReader] tag): Pointer[U8] =>
+    @ncreader_contents(n)
+
+  fun reader_clear(n: NullablePointer[NcReader] tag): I32 =>
+    @ncreader_clear(n)
+
+  fun reader_offer_input(n: NullablePointer[NcReader] tag,
+    ni: NullablePointer[Ncinput]): Bool
+  =>
+    @ncreader_offer_input(n, ni)
