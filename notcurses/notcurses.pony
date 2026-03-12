@@ -83,6 +83,14 @@ class NotCurses
     _timers = None
     _input_timer = None
 
+    // Mark all plane wrappers as destroyed before calling notcurses_stop(),
+    // which frees all planes at the C level. Without this, GC finalizers
+    // on the Pony wrappers would double-free the already-destroyed C planes.
+    match _stdplane
+    | let std: NotCursesPlane => std._mark_destroyed()
+    end
+    _stdplane = None
+
     if NotCursesFFI.stop(ptr) != 0 then error end
 
 
