@@ -86,6 +86,12 @@ class NotCursesPlane
       end
     end
 
+  // WARNING: If GC finalizes a parent plane before its children without
+  // an explicit destroy() call, the C library will have already freed the
+  // children when the parent's _final() calls plane_destroy. The children's
+  // _final() then double-frees. This is inherent to Pony's GC model —
+  // finalizer ordering is not guaranteed. Users should call destroy()
+  // explicitly on parent planes to avoid this.
   fun _final() =>
     if (not _destroyed) and (not _is_stdplane) then
       NotCursesFFI.plane_destroy(_ptr)

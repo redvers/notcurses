@@ -5,6 +5,7 @@ class NotCurses
   var enclosing: (NotCursesActor | None)
   var _timers: (Timers | None) = None
   var _input_timer: (Timer tag | None) = None
+  var _stdplane: (NotCursesPlane | None) = None
 
   new none() =>
     enclosing = None
@@ -51,8 +52,14 @@ class NotCurses
 
     enc._initiate()
 
-  fun stdplane(): NotCursesPlane =>
-    NotCursesPlane.from_ptr(NotCursesFFI.stdplane(ptr), true)
+  fun ref stdplane(): NotCursesPlane =>
+    match _stdplane
+    | let p: NotCursesPlane => p
+    else
+      let p = NotCursesPlane.from_ptr(NotCursesFFI.stdplane(ptr), true)
+      _stdplane = p
+      p
+    end
 
   fun dim_yx(): (U32, U32) =>
     NotCursesFFI.term_dim_yx(ptr)
