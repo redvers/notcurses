@@ -11,3 +11,6 @@ struct NcReel       // opaque: struct ncreel*
 struct NcProgbar    // opaque: struct ncprogbar*
 struct NcTablet     // opaque: struct nctablet*
 struct CFile        // opaque: FILE*
+struct NcSelector       // opaque: struct ncselector*
+struct NcMultiselector  // opaque: struct ncmultiselector*
+struct NcReader         // opaque: struct ncreader*
