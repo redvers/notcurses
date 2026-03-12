@@ -1,5 +1,5 @@
 class NotCurses
-  var ptr: Pointer[NcNotcurses] tag = Pointer[NcNotcurses]
+  var ptr: NullablePointer[NcNotcurses] tag = NullablePointer[NcNotcurses].none()
   var enclosing: (NotCursesActor | None)
 
   new none() =>
@@ -27,11 +27,12 @@ class NotCurses
     options.flags = flags
     enclosing = enc
 
-    ptr = NotCursesFFI.core_init(
-      NullablePointer[Notcursesoptions](options), Pointer[CFile]
+    let result = NotCursesFFI.core_init(
+      NullablePointer[Notcursesoptions](options), NullablePointer[CFile].none()
     )
 
-    if (ptr.is_null()) then error end
+    if result.is_none() then error end
+    ptr = result
     (enclosing as NotCursesActor)._initiate()
 
   fun stdplane(): NotCursesPlane =>

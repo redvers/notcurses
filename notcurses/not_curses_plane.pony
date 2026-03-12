@@ -1,10 +1,10 @@
 class NotCursesPlane
-  var ptr: Pointer[NcPlaneT] tag
+  var ptr: NullablePointer[NcPlaneT] tag
 
   new none() =>
-    ptr = Pointer[NcPlaneT]
+    ptr = NullablePointer[NcPlaneT].none()
 
-  new from_ptr(ptr': Pointer[NcPlaneT] tag) =>
+  new from_ptr(ptr': NullablePointer[NcPlaneT] tag) =>
     ptr = ptr'
 
   new create(parent: NotCursesPlane, opts: Ncplaneoptions) =>
@@ -14,7 +14,7 @@ class NotCursesPlane
     NotCursesPlane.create(this, opt)
 
   fun duplicate(newparent: NotCursesPlane = NotCursesPlane.none()) =>
-    NotCursesPlane.from_ptr(@ncplane_dup(ptr, newparent.ptr))
+    NotCursesPlane.from_ptr(NotCursesFFI.plane_dup(ptr, Pointer[None]))
 
   fun dim_yx(): (U32, U32) =>
     NotCursesFFI.plane_dim_yx(ptr)

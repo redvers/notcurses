@@ -1,15 +1,15 @@
 // Pony reimplementations of inline ncplane helper functions from notcurses.h.
 
 primitive NcPlaneFFI
-  fun putc(n: Pointer[NcPlaneT] tag, c: NullablePointer[Nccell] tag): I32 =>
+  fun putc(n: NullablePointer[NcPlaneT] tag, c: NullablePointer[Nccell] tag): I32 =>
     @ncplane_putc_yx(n, -1, -1, c)
 
-  fun putegc(n: Pointer[NcPlaneT] tag, egc: Pointer[U8] tag,
+  fun putegc(n: NullablePointer[NcPlaneT] tag, egc: Pointer[U8] tag,
     sbytes: Pointer[USize]): I32
   =>
     @ncplane_putegc_yx(n, -1, -1, egc, sbytes)
 
-  fun putstr_yx(n: Pointer[NcPlaneT] tag, y: I32, x: I32, s: String box): I32 =>
+  fun putstr_yx(n: NullablePointer[NcPlaneT] tag, y: I32, x: I32, s: String box): I32 =>
     var ret: I32 = 0
     var idx: USize = 0
     var cur_y = y
@@ -27,10 +27,10 @@ primitive NcPlaneFFI
     end
     ret
 
-  fun putstr(n: Pointer[NcPlaneT] tag, s: String box): I32 =>
+  fun putstr(n: NullablePointer[NcPlaneT] tag, s: String box): I32 =>
     putstr_yx(n, -1, -1, s)
 
-  fun putstr_aligned(n: Pointer[NcPlaneT] tag, y: I32, align: I32,
+  fun putstr_aligned(n: NullablePointer[NcPlaneT] tag, y: I32, align: I32,
     s: String box): I32
   =>
     var validbytes: I32 = 0
@@ -40,17 +40,17 @@ primitive NcPlaneFFI
     if xpos < 0 then xpos = 0 end
     putstr_yx(n, y, xpos, s)
 
-  fun dim_y(n: Pointer[NcPlaneT] tag): U32 =>
+  fun dim_y(n: NullablePointer[NcPlaneT] tag): U32 =>
     var dimy: U32 = 0
     @ncplane_dim_yx(n, addressof dimy, Pointer[U32])
     dimy
 
-  fun dim_x(n: Pointer[NcPlaneT] tag): U32 =>
+  fun dim_x(n: NullablePointer[NcPlaneT] tag): U32 =>
     var dimx: U32 = 0
     @ncplane_dim_yx(n, Pointer[U32], addressof dimx)
     dimx
 
-  fun halign(n: Pointer[NcPlaneT] tag, align: I32, c: I32): I32 =>
+  fun halign(n: NullablePointer[NcPlaneT] tag, align: I32, c: I32): I32 =>
     let dimx = dim_x(n).i32()
     match align
     | NcAlign.left() => 0
@@ -60,7 +60,7 @@ primitive NcPlaneFFI
       -0x7FFFFFFF
     end
 
-  fun box_sized(n: Pointer[NcPlaneT] tag,
+  fun box_sized(n: NullablePointer[NcPlaneT] tag,
     ul: NullablePointer[Nccell] tag, ur: NullablePointer[Nccell] tag,
     ll: NullablePointer[Nccell] tag, lr: NullablePointer[Nccell] tag,
     hline: NullablePointer[Nccell] tag, vline: NullablePointer[Nccell] tag,
@@ -72,14 +72,14 @@ primitive NcPlaneFFI
     @ncplane_box(n, ul, ur, ll, lr, hline, vline,
       (y + ylen) - 1, (x + xlen) - 1, ctlword)
 
-  fun _prime_cell(n: Pointer[NcPlaneT] tag, c: Nccell ref,
+  fun _prime_cell(n: NullablePointer[NcPlaneT] tag, c: Nccell ref,
     chars: String box, idx: USize, styles: U16, channels: U64): I32
   =>
     c.stylemask = styles
     c.channels = channels
     @nccell_load(n, NullablePointer[Nccell](c), chars.cpointer(idx))
 
-  fun rounded_box(n: Pointer[NcPlaneT] tag, styles: U16, channels: U64,
+  fun rounded_box(n: NullablePointer[NcPlaneT] tag, styles: U16, channels: U64,
     ystop: U32, xstop: U32, ctlword: U32): I32
   =>
     // "╭╮╰╯─│" — 6 multi-byte UTF-8 characters
@@ -128,7 +128,7 @@ primitive NcPlaneFFI
     @nccell_release(n, NullablePointer[Nccell](vl'))
     ret
 
-  fun double_box(n: Pointer[NcPlaneT] tag, styles: U16, channels: U64,
+  fun double_box(n: NullablePointer[NcPlaneT] tag, styles: U16, channels: U64,
     ystop: U32, xstop: U32, ctlword: U32): I32
   =>
     let chars: String val = "╔╗╚╝═║"
@@ -175,7 +175,7 @@ primitive NcPlaneFFI
     @nccell_release(n, NullablePointer[Nccell](vl'))
     ret
 
-  fun ascii_box(n: Pointer[NcPlaneT] tag, styles: U16, channels: U64,
+  fun ascii_box(n: NullablePointer[NcPlaneT] tag, styles: U16, channels: U64,
     ystop: U32, xstop: U32, ctlword: U32): I32
   =>
     let chars: String val = "/\\\\/-|"
@@ -222,7 +222,7 @@ primitive NcPlaneFFI
     @nccell_release(n, NullablePointer[Nccell](vl'))
     ret
 
-  fun perimeter_rounded(n: Pointer[NcPlaneT] tag, stylemask: U16,
+  fun perimeter_rounded(n: NullablePointer[NcPlaneT] tag, stylemask: U16,
     channels: U64, ctlword: U32): I32
   =>
     if @ncplane_cursor_move_yx(n, 0, 0) != 0 then return -1 end
@@ -273,7 +273,7 @@ primitive NcPlaneFFI
     @nccell_release(n, NullablePointer[Nccell](vl'))
     r
 
-  fun perimeter_double(n: Pointer[NcPlaneT] tag, stylemask: U16,
+  fun perimeter_double(n: NullablePointer[NcPlaneT] tag, stylemask: U16,
     channels: U64, ctlword: U32): I32
   =>
     if @ncplane_cursor_move_yx(n, 0, 0) != 0 then return -1 end

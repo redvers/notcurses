@@ -23,6 +23,7 @@ primitive NcStyle
   fun undercurl(): U32 => 0x0004
   fun underline(): U32 => 0x0008
   fun italic(): U32 =>    0x0010
+  fun blink(): U32 =>     0x0020
   fun mask(): U32 =>      0xFFFF
 
 primitive NcPlaneOption
