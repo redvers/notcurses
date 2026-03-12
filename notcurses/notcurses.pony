@@ -54,9 +54,6 @@ class NotCurses
     NotCursesFFI.canutf8(ptr)
 
 
-
-
-
   fun stop(): I32 =>
     NotCursesFFI.stop(ptr)
 

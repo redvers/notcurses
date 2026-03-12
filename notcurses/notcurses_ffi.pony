@@ -321,7 +321,6 @@ primitive NotCursesFFI
     let ret = @ncplane_qrcode(n, addressof y, addressof x, data, len)
     (ret, y, x)
 
-//use @ncplane_userptr[NotCursesResizeCallback](t: NullablePointer[NcPlaneT] tag)
   fun plane_userptr(t: NullablePointer[NcPlaneT] tag): NotCursesResizeCallback =>
     @ncplane_userptr(t)
 
