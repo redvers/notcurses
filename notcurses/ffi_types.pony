@@ -3,7 +3,7 @@
 // passing the Pony singleton address instead of a C pointer.
 //
 // Public (no leading underscore) so other packages can use them in
-// Pointer[NcNotcurses] etc.
+// NullablePointer[NcNotcurses] etc.
 
 struct NcNotcurses  // opaque: struct notcurses*
 struct NcPlaneT     // opaque: struct ncplane*

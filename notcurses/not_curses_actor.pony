@@ -1,4 +1,5 @@
 trait tag NotCursesActor
   fun ref _notcurses(): NotCurses
-  fun tag _initiate()
-  fun tag _exit()
+  be _initiate()
+  be _exit()
+  be input_received(event: InputEvent)
