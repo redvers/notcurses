@@ -99,3 +99,22 @@ primitive NcBoxCtl
   fun hgradient(): U32 => 0b0001_0000
   fun vgradient(): U32 => 0b0010_0000
 
+primitive NcPlotOption
+  fun labelticksd(): U64 =>   0x0001
+  fun exponentiald(): U64 =>  0x0002
+  fun verticali(): U64 =>     0x0004
+  fun nodegrade(): U64 =>     0x0008
+  fun detectmaxonly(): U64 => 0x0010
+  fun printsample(): U64 =>   0x0020
+
+primitive NcBlitter
+  fun default_blitter(): I32 => 0
+  fun blit_1x1(): I32 =>       1
+  fun blit_2x1(): I32 =>       2
+  fun blit_2x2(): I32 =>       3
+  fun blit_3x2(): I32 =>       4
+  fun braille(): I32 =>        5
+  fun pixel(): I32 =>          6
+  fun blit_4x1(): I32 =>       7
+  fun blit_8x1(): I32 =>       8
+

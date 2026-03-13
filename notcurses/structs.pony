@@ -334,3 +334,32 @@ struct Ncreaderoptions
   var tattrword: U32 = 0
   var _padding0: U32 = 0
   var flags: U64 = 0
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:4466
+  Original Name: ncplot_options
+  Struct Size (bits):  384
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [FundamentalType(long unsigned int) size=64]: maxchannels
+     000064: [FundamentalType(long unsigned int) size=64]: minchannels
+     000128: [FundamentalType(short unsigned int) size=16]: legendstyle
+     000144: [padding 16 bits for I32 alignment]
+     000160: [Enumeration size=32,fid: ncblitter_e]: gridtype
+     000192: [FundamentalType(int) size=32]: rangex
+     000224: [padding 32 bits for Pointer alignment]
+     000256: [PointerType size=64]->[FundamentalType(char) size=8]: title
+     000320: [FundamentalType(long unsigned int) size=64]: flags
+*/
+struct Ncplotoptions
+  var maxchannels: U64 = 0
+  var minchannels: U64 = 0
+  var legendstyle: U16 = 0
+  var _padding0: U16 = 0
+  var gridtype: I32 = 0
+  var rangex: I32 = 0
+  var _padding1: U32 = 0
+  var title: Pointer[U8] tag = Pointer[U8]
+  var flags: U64 = 0

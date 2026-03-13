@@ -14,3 +14,4 @@ struct CFile        // opaque: FILE*
 struct NcSelector       // opaque: struct ncselector*
 struct NcMultiselector  // opaque: struct ncmultiselector*
 struct NcReader         // opaque: struct ncreader*
+struct NcUPlot          // opaque: struct ncuplot*

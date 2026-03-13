@@ -200,6 +200,17 @@ use @ncreader_move_right[I32](n: NullablePointer[NcReader] tag)
 use @ncreader_move_up[I32](n: NullablePointer[NcReader] tag)
 use @ncreader_move_down[I32](n: NullablePointer[NcReader] tag)
 
+// Widgets — UPlot
+use @ncuplot_create[NullablePointer[NcUPlot]](
+  n: NullablePointer[NcPlaneT] tag, opts: NullablePointer[Ncplotoptions] tag,
+  miny: U64, maxy: U64)
+use @ncuplot_plane[NullablePointer[NcPlaneT]](n: NullablePointer[NcUPlot] tag)
+use @ncuplot_add_sample[I32](n: NullablePointer[NcUPlot] tag, x: U64, y: U64)
+use @ncuplot_set_sample[I32](n: NullablePointer[NcUPlot] tag, x: U64, y: U64)
+use @ncuplot_sample[I32](
+  n: NullablePointer[NcUPlot] tag, x: U64, y: Pointer[U64] tag)
+use @ncuplot_destroy[None](n: NullablePointer[NcUPlot] tag)
+
 // Utility
 use @ncstrwidth[I32](
   egcs: Pointer[U8] tag, validbytes: Pointer[I32] tag,
@@ -553,3 +564,25 @@ primitive NotCursesFFI
 
   fun reader_move_down(n: NullablePointer[NcReader] tag): I32 =>
     @ncreader_move_down(n)
+
+  // Widgets — UPlot
+  fun uplot_create(n: NullablePointer[NcPlaneT] tag,
+    opts: NullablePointer[Ncplotoptions], miny: U64, maxy: U64):
+    NullablePointer[NcUPlot]
+  =>
+    @ncuplot_create(n, opts, miny, maxy)
+
+  fun uplot_plane(n: NullablePointer[NcUPlot] tag): NullablePointer[NcPlaneT] =>
+    @ncuplot_plane(n)
+
+  fun uplot_add_sample(n: NullablePointer[NcUPlot] tag, x: U64, y: U64): I32 =>
+    @ncuplot_add_sample(n, x, y)
+
+  fun uplot_set_sample(n: NullablePointer[NcUPlot] tag, x: U64, y: U64): I32 =>
+    @ncuplot_set_sample(n, x, y)
+
+  fun uplot_sample(n: NullablePointer[NcUPlot] tag, x: U64, y: Pointer[U64] tag): I32 =>
+    @ncuplot_sample(n, x, y)
+
+  fun uplot_destroy(n: NullablePointer[NcUPlot] tag) =>
+    @ncuplot_destroy(n)
