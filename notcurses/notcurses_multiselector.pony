@@ -32,8 +32,8 @@ class NotCursesMultiselector is InputWidget
     _nc = nc
     _items = items
 
-    // Build C item array
-    let c_items = Array[Ncmselectoritem](items.size())
+    // Build C item array (NULL-terminated — C iterates until option is NULL)
+    let c_items = Array[Ncmselectoritem](items.size() + 1)
     for item in items.values() do
       let ci = Ncmselectoritem
       ci.option = item.option.cstring()
@@ -41,6 +41,10 @@ class NotCursesMultiselector is InputWidget
       ci.selected = item.selected
       c_items.push(consume ci)
     end
+    let sentinel = Ncmselectoritem
+    sentinel.option = Pointer[U8]
+    sentinel.desc = Pointer[U8]
+    c_items.push(consume sentinel)
 
     // Build options
     var opts = Ncmultiselectoroptions

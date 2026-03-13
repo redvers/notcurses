@@ -22,21 +22,13 @@ class NotCursesSelector is InputWidget
     secondary: (String | None) = None,
     footer: (String | None) = None,
     defidx: U32 = 0,
-    maxdisplay: U32 = 4)?
+    maxdisplay: U32 = 4,
+    opchannels: U64 = 0,
+    descchannels: U64 = 0)?
   =>
     _nc = nc
 
-    // Build C item array
-    let c_items = Array[Ncselectoritem](items.size())
-    for item in items.values() do
-      let ci = Ncselectoritem
-      ci.option = item.option.cstring()
-      ci.desc = item.desc.cstring()
-      c_items.push(consume ci)
-      _items.push(SelectorItem(item.option, item.desc))
-    end
-
-    // Build options
+    // Build options (no items — add them after creation via additem)
     var opts = Ncselectoroptions
     match title
     | let s: String => opts.title = s.cstring()
@@ -47,9 +39,10 @@ class NotCursesSelector is InputWidget
     match footer
     | let s: String => opts.footer = s.cstring()
     end
-    opts.items = c_items.cpointer()
     opts.defidx = defidx
     opts.maxdisplay = maxdisplay
+    opts.opchannels = opchannels
+    opts.descchannels = descchannels
 
     // Create child plane
     let plane_opts = Ncplaneoptions(where
@@ -66,6 +59,11 @@ class NotCursesSelector is InputWidget
       error
     end
     _ptr = result
+
+    // Add items after creation via ncselector_additem
+    for item in items.values() do
+      try add_item(item.option, item.desc)? end
+    end
 
   fun selected(): String val =>
     recover val

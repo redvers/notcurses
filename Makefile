@@ -51,13 +51,12 @@ demo: $(demo_binary)
 $(demo_binary): $(DEMO_FILES) $(SOURCE_FILES) | $(BUILD_DIR) dependencies
 	${PONYC} -o ${BUILD_DIR} demo
 
-EXAMPLES := animate grid highcon qrcode reel sliders uniblock whiteout
+EXAMPLES := progbar selector multiselector reader ponyapi
 
 examples: $(addprefix example-,$(EXAMPLES))
 
 define EXAMPLE_template
 example-$(1): $(BUILD_DIR)/$(1)
-	$$^
 
 $(BUILD_DIR)/$(1): $(shell find examples/$(1) -name *.pony 2>/dev/null) $(SOURCE_FILES) | $(BUILD_DIR) dependencies
 	$${PONYC} -o $${BUILD_DIR} -b $(1) examples/$(1)

@@ -32,10 +32,17 @@ actor SelectorDemo is NotCursesActor
         a
       end
 
+      // Channel encoding: upper 32 = FG, lower 32 = BG
+      // Bit 30 (0x40000000) = "not default color", lower 24 = RGB
+      let green_on_black: U64 = (0x40_00FF00 << 32) or 0x40_000000
+      let white_on_black: U64 = (0x40_CCCCCC << 32) or 0x40_000000
+
       _sel = NotCursesSelector(_nc, std, 2, 2,
         rows - 4, cols - 4, items,
         "Pick a Language", "Use arrows to navigate",
-        "Press Enter to select, q to quit")?
+        "Press Enter to select, q to quit"
+        where opchannels = green_on_black,
+        descchannels = white_on_black)?
 
       _nc.focus(_sel)
       _nc.render()?
@@ -49,6 +56,11 @@ actor SelectorDemo is NotCursesActor
       if k.codepoint == 113 then  // 'q'
         _sel.destroy()
         try _nc.stop()? end
+      elseif k.codepoint == 1115121 then  // NCKEY_ENTER
+        let choice = _sel.selected()
+        _sel.destroy()
+        try _nc.stop()? end
+        _env.out.print("Selected: " + choice)
       end
     end
 

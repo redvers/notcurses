@@ -1,7 +1,8 @@
 use "../../notcurses"
 
 actor Main
-  new create(env: Env) =>
+  new create(env: Env) => None
+    /*
     MultiselectorDemo(env)
 
 actor MultiselectorDemo is NotCursesActor
@@ -55,3 +56,4 @@ actor MultiselectorDemo is NotCursesActor
 
   be _exit() => None
   fun ref _notcurses(): NotCurses => _nc
+  */
