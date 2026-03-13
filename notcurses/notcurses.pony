@@ -6,6 +6,7 @@ class NotCurses
   var _timers: (Timers | None) = None
   var _input_timer: (Timer tag | None) = None
   var _stdplane: (NotCursesPlane | None) = None
+  var _focused: (InputWidget | None) = None
 
   new none() =>
     enclosing = None
@@ -44,7 +45,7 @@ class NotCurses
     let timers = Timers
     let interval = poll_interval_ms * 1_000_000  // ms to ns
     let timer = Timer(
-      _InputPollNotify(ptr, enc),
+      _InputPollNotify(enc),
       interval, interval)
     _input_timer = timer
     timers(consume timer)
@@ -73,6 +74,40 @@ class NotCurses
   fun can_utf8(): Bool =>
     NotCursesFFI.canutf8(ptr)
 
+  fun ref focus(widget: InputWidget) =>
+    _focused = widget
+
+  fun ref unfocus() =>
+    _focused = None
+
+  fun ref unfocus_if(widget: InputWidget) =>
+    match _focused
+    | let w: InputWidget =>
+      if w is widget then _focused = None end
+    end
+
+  fun ref _poll_and_route(enc': NotCursesActor ref) =>
+    var ni: Ncinput ref = Ncinput
+    var needs_render = false
+    var ret = NotCursesFFI.get_nblock(ptr,
+      NullablePointer[Ncinput](ni))
+    while (ret != 0) and (ret != 0xFFFFFFFF) do
+      var consumed = false
+      match _focused
+      | let w: InputWidget =>
+        consumed = w._offer_input(ni)
+        if consumed then needs_render = true end
+      end
+      if not consumed then
+        let event = InputClassifier.classify(ni)
+        enc'.input_received(event)
+      end
+      ni = Ncinput
+      ret = NotCursesFFI.get_nblock(ptr,
+        NullablePointer[Ncinput](ni))
+    end
+    if needs_render then try render()? end end
+
   fun ref stop()? =>
     // Cancel input polling
     match (_timers, _input_timer)
@@ -82,6 +117,7 @@ class NotCurses
     end
     _timers = None
     _input_timer = None
+    _focused = None
 
     // Mark all plane wrappers as destroyed before calling notcurses_stop(),
     // which frees all planes at the C level. Without this, GC finalizers
@@ -95,29 +131,11 @@ class NotCurses
 
 
 class _InputPollNotify is TimerNotify
-  let _nc_ptr: NullablePointer[NcNotcurses] tag
   let _actor: NotCursesActor
 
-  new iso create(nc_ptr: NullablePointer[NcNotcurses] tag,
-    actor': NotCursesActor)
-  =>
-    _nc_ptr = nc_ptr
+  new iso create(actor': NotCursesActor) =>
     _actor = actor'
 
   fun ref apply(timer: Timer, count: U64): Bool =>
-    // Poll for all available input in this tick
-    _poll()
-    true  // keep timer alive
-
-  fun ref _poll() =>
-    var ni: Ncinput ref = Ncinput
-    var ret = NotCursesFFI.get_nblock(_nc_ptr,
-      NullablePointer[Ncinput](ni))
-    // ret == 0 means no input, ret == 0xFFFFFFFF means error ((U32)-1)
-    while (ret != 0) and (ret != 0xFFFFFFFF) do
-      let event = InputClassifier.classify(ni)
-      _actor.input_received(event)
-      ni = Ncinput
-      ret = NotCursesFFI.get_nblock(_nc_ptr,
-        NullablePointer[Ncinput](ni))
-    end
+    _actor._poll_input()
+    true

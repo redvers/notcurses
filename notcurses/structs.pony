@@ -209,3 +209,128 @@ struct Ncprogbaroptions
   var blchannel: U32 = U32(0)
   var brchannel: U32 = U32(0)
   var flags: U64 = U64(0)
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:3886
+  Original Name: ncselector_item
+  Struct Size (bits):  128
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [PointerType size=64]->[FundamentalType(char) size=8]: option
+     000064: [PointerType size=64]->[FundamentalType(char) size=8]: desc
+*/
+struct Ncselectoritem
+  var option: Pointer[U8] tag = Pointer[U8]
+  var desc: Pointer[U8] tag = Pointer[U8]
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:3891
+  Original Name: ncselector_options
+  Struct Size (bits):  704
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [PointerType size=64]->[FundamentalType(char) size=8]: title
+     000064: [PointerType size=64]->[FundamentalType(char) size=8]: secondary
+     000128: [PointerType size=64]->[FundamentalType(char) size=8]: footer
+     000192: [PointerType size=64]->[Ncselectoritem]: items
+     000256: [FundamentalType(unsigned int) size=32]: defidx
+     000288: [FundamentalType(unsigned int) size=32]: maxdisplay
+     000320: [FundamentalType(long unsigned int) size=64]: opchannels
+     000384: [FundamentalType(long unsigned int) size=64]: descchannels
+     000448: [FundamentalType(long unsigned int) size=64]: titlechannels
+     000512: [FundamentalType(long unsigned int) size=64]: footchannels
+     000576: [FundamentalType(long unsigned int) size=64]: boxchannels
+     000640: [FundamentalType(long unsigned int) size=64]: flags
+*/
+struct Ncselectoroptions
+  var title: Pointer[U8] tag = Pointer[U8]
+  var secondary: Pointer[U8] tag = Pointer[U8]
+  var footer: Pointer[U8] tag = Pointer[U8]
+  var items: Pointer[Ncselectoritem] tag = Pointer[Ncselectoritem]
+  var defidx: U32 = 0
+  var maxdisplay: U32 = 0
+  var opchannels: U64 = 0
+  var descchannels: U64 = 0
+  var titlechannels: U64 = 0
+  var footchannels: U64 = 0
+  var boxchannels: U64 = 0
+  var flags: U64 = 0
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:3946
+  Original Name: ncmselector_item
+  Struct Size (bits):  192
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [PointerType size=64]->[FundamentalType(char) size=8]: option
+     000064: [PointerType size=64]->[FundamentalType(char) size=8]: desc
+     000128: [FundamentalType(bool) size=8]: selected
+     000136-000191: padding (7 bytes)
+*/
+struct Ncmselectoritem
+  var option: Pointer[U8] tag = Pointer[U8]
+  var desc: Pointer[U8] tag = Pointer[U8]
+  var selected: Bool = false
+  var _padding0: U8 = 0
+  var _padding1: U16 = 0
+  var _padding2: U32 = 0
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:3973
+  Original Name: ncmultiselector_options
+  Struct Size (bits):  704
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [PointerType size=64]->[FundamentalType(char) size=8]: title
+     000064: [PointerType size=64]->[FundamentalType(char) size=8]: secondary
+     000128: [PointerType size=64]->[FundamentalType(char) size=8]: footer
+     000192: [PointerType size=64]->[Ncmselectoritem]: items
+     000256: [FundamentalType(unsigned int) size=32]: maxdisplay
+     000288: [padding 32 bits for U64 alignment]
+     000320: [FundamentalType(long unsigned int) size=64]: opchannels
+     000384: [FundamentalType(long unsigned int) size=64]: descchannels
+     000448: [FundamentalType(long unsigned int) size=64]: titlechannels
+     000512: [FundamentalType(long unsigned int) size=64]: footchannels
+     000576: [FundamentalType(long unsigned int) size=64]: boxchannels
+     000640: [FundamentalType(long unsigned int) size=64]: flags
+*/
+struct Ncmultiselectoroptions
+  var title: Pointer[U8] tag = Pointer[U8]
+  var secondary: Pointer[U8] tag = Pointer[U8]
+  var footer: Pointer[U8] tag = Pointer[U8]
+  var items: Pointer[Ncmselectoritem] tag = Pointer[Ncmselectoritem]
+  var maxdisplay: U32 = 0
+  var _padding0: U32 = 0
+  var opchannels: U64 = 0
+  var descchannels: U64 = 0
+  var titlechannels: U64 = 0
+  var footchannels: U64 = 0
+  var boxchannels: U64 = 0
+  var flags: U64 = 0
+
+
+/*
+  Source: /usr/include/notcurses/notcurses.h:4597
+  Original Name: ncreader_options
+  Struct Size (bits):  192
+  Struct Align (bits): 64
+
+  Fields (Offset in bits):
+     000000: [FundamentalType(long unsigned int) size=64]: tchannels
+     000064: [FundamentalType(unsigned int) size=32]: tattrword
+     000096: [padding 32 bits for U64 alignment]
+     000128: [FundamentalType(long unsigned int) size=64]: flags
+*/
+struct Ncreaderoptions
+  var tchannels: U64 = 0
+  var tattrword: U32 = 0
+  var _padding0: U32 = 0
+  var flags: U64 = 0

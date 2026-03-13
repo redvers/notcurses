@@ -18,6 +18,8 @@ class NotCursesPlane
     _parent = None
     _is_stdplane = is_stdplane
 
+  fun raw_ptr(): NullablePointer[NcPlaneT] tag => _ptr
+
   new create(parent: NotCursesPlane, opts: Ncplaneoptions)? =>
     // Check is_none() on the ref result before assigning to tag field
     let result = NotCursesFFI.plane_create(parent._ptr,
