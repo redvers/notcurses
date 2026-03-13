@@ -88,6 +88,7 @@ class NotCurses
 
   fun ref _poll_and_route(enc': NotCursesActor ref) =>
     var ni: Ncinput ref = Ncinput
+    var needs_render = false
     var ret = NotCursesFFI.get_nblock(ptr,
       NullablePointer[Ncinput](ni))
     while (ret != 0) and (ret != 0xFFFFFFFF) do
@@ -95,6 +96,7 @@ class NotCurses
       match _focused
       | let w: InputWidget =>
         consumed = w._offer_input(ni)
+        if consumed then needs_render = true end
       end
       if not consumed then
         let event = InputClassifier.classify(ni)
@@ -104,6 +106,7 @@ class NotCurses
       ret = NotCursesFFI.get_nblock(ptr,
         NullablePointer[Ncinput](ni))
     end
+    if needs_render then try render()? end end
 
   fun ref stop()? =>
     // Cancel input polling

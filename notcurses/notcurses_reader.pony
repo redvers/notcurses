@@ -54,6 +54,10 @@ class NotCursesReader is InputWidget
     if NotCursesFFI.reader_clear(_ptr) != 0 then error end
 
   fun ref _offer_input(ni: Ncinput): Bool =>
+    // Let Escape and Enter fall through — ncreader consumes Escape but
+    // doesn't use it, and the C reader is single-line only.
+    if ni.id == 27 then return false end      // Escape
+    if ni.id == 1115121 then return false end  // NCKEY_ENTER
     NotCursesFFI.reader_offer_input(_ptr, NullablePointer[Ncinput](ni))
 
   fun ref destroy() =>

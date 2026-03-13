@@ -195,6 +195,10 @@ use @ncreader_contents[Pointer[U8]](n: NullablePointer[NcReader] tag)
 use @ncreader_clear[I32](n: NullablePointer[NcReader] tag)
 use @ncreader_offer_input[Bool](
   n: NullablePointer[NcReader] tag, ni: NullablePointer[Ncinput] tag)
+use @ncreader_move_left[I32](n: NullablePointer[NcReader] tag)
+use @ncreader_move_right[I32](n: NullablePointer[NcReader] tag)
+use @ncreader_move_up[I32](n: NullablePointer[NcReader] tag)
+use @ncreader_move_down[I32](n: NullablePointer[NcReader] tag)
 
 // Utility
 use @ncstrwidth[I32](
@@ -537,3 +541,15 @@ primitive NotCursesFFI
     ni: NullablePointer[Ncinput]): Bool
   =>
     @ncreader_offer_input(n, ni)
+
+  fun reader_move_left(n: NullablePointer[NcReader] tag): I32 =>
+    @ncreader_move_left(n)
+
+  fun reader_move_right(n: NullablePointer[NcReader] tag): I32 =>
+    @ncreader_move_right(n)
+
+  fun reader_move_up(n: NullablePointer[NcReader] tag): I32 =>
+    @ncreader_move_up(n)
+
+  fun reader_move_down(n: NullablePointer[NcReader] tag): I32 =>
+    @ncreader_move_down(n)

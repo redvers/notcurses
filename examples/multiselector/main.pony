@@ -48,6 +48,7 @@ actor MultiselectorDemo is NotCursesActor
     match event
     | let k: KeyEvent =>
       if k.codepoint == 113 then  // 'q'
+        _msel.destroy()
         try _nc.stop()? end
       end
     end

@@ -47,6 +47,7 @@ actor SelectorDemo is NotCursesActor
     match event
     | let k: KeyEvent =>
       if k.codepoint == 113 then  // 'q'
+        _sel.destroy()
         try _nc.stop()? end
       end
     end

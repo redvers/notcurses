@@ -25,7 +25,7 @@ actor ReaderDemo is NotCursesActor
       std.style().>bold().>fg(200, 200, 200).apply()?
       std.box_draw().perimeter_rounded(NcBoxCtl.all_borders())?
       std.home()
-      std.output().putstr_yx("Reader Demo - Type text, Esc to quit", 0, 2)?
+      std.output().putstr_yx("Reader Demo - Type text, Enter/Esc to quit", 0, 2)?
 
       _reader = NotCursesReader(_nc, std, 2, 2,
         rows - 4, cols - 4,
@@ -40,8 +40,11 @@ actor ReaderDemo is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      if k.codepoint == 27 then  // Escape
+      if (k.codepoint == 27) or (k.codepoint == 1115121) then  // Escape or Enter
+        let text = _reader.contents()
+        _reader.destroy()
         try _nc.stop()? end
+        _env.out.print("You entered: " + text)
       end
     end
 

@@ -58,6 +58,7 @@ actor ProgbarDemo is NotCursesActor
       match _timers
       | let ts: Timers => ts.dispose()
       end
+      _bar.destroy()
       try _nc.stop()? end
     end
 
@@ -68,6 +69,7 @@ actor ProgbarDemo is NotCursesActor
         match _timers
         | let ts: Timers => ts.dispose()
         end
+        _bar.destroy()
         try _nc.stop()? end
       end
     end
