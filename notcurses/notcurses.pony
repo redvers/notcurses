@@ -126,7 +126,7 @@ class NotCurses
     | let std: NotCursesPlane => std._mark_destroyed()
     end
     _stdplane = None
-
+    @printf("\x1b[=0u".cstring())
     if NotCursesFFI.stop(ptr) != 0 then error end
 
 

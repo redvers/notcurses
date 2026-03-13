@@ -1,5 +1,7 @@
 use "lib:notcurses-core"
 
+// For terminal reset on exit.
+use @printf[I32](fmt: Pointer[U8] tag, ...)
 // Lifecycle
 use @notcurses_core_init[NullablePointer[NcNotcurses]](
   opts: NullablePointer[Notcursesoptions] tag, fp: NullablePointer[CFile] tag)
