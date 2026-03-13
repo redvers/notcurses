@@ -509,7 +509,7 @@ primitive NotCursesFFI
     @ncmultiselector_destroy(n)
 
   fun multiselector_selected(n: NullablePointer[NcMultiselector] tag,
-    selected: Pointer[Bool], count: U32): I32
+    selected: Pointer[Bool] tag, count: U32): I32
   =>
     @ncmultiselector_selected(n, selected, count)
 

@@ -69,7 +69,7 @@ class NotCursesSelector is InputWidget
 
   fun selected(): String val =>
     recover val
-      let ptr = @ncselector_selected(_ptr)
+      let ptr = NotCursesFFI.selector_selected(_ptr)
       if ptr.is_null() then
         String
       else
@@ -102,7 +102,7 @@ class NotCursesSelector is InputWidget
 
   fun ref next_item(): String val =>
     recover val
-      let ptr = @ncselector_nextitem(_ptr)
+      let ptr = NotCursesFFI.selector_nextitem(_ptr)
       if ptr.is_null() then
         String
       else
@@ -112,7 +112,7 @@ class NotCursesSelector is InputWidget
 
   fun ref prev_item(): String val =>
     recover val
-      let ptr = @ncselector_previtem(_ptr)
+      let ptr = NotCursesFFI.selector_previtem(_ptr)
       if ptr.is_null() then
         String
       else

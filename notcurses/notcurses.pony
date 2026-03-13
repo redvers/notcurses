@@ -114,6 +114,7 @@ class NotCurses
     end
     _timers = None
     _input_timer = None
+    _focused = None
 
     // Mark all plane wrappers as destroyed before calling notcurses_stop(),
     // which frees all planes at the C level. Without this, GC finalizers

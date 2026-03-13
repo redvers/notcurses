@@ -74,7 +74,7 @@ class NotCursesMultiselector is InputWidget
 
   fun ref selected(count: U32): Array[Bool] =>
     let arr = Array[Bool].init(false, count.usize())
-    @ncmultiselector_selected(_ptr, arr.cpointer(), count)
+    NotCursesFFI.multiselector_selected(_ptr, arr.cpointer(), count)
     arr
 
   fun ref _offer_input(ni: Ncinput): Bool =>

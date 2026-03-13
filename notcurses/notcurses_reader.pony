@@ -40,7 +40,7 @@ class NotCursesReader is InputWidget
   fun ref contents(): String val =>
     // reader_contents returns malloc'd memory that must be freed
     recover val
-      let ptr = @ncreader_contents(_ptr)
+      let ptr = NotCursesFFI.reader_contents(_ptr)
       if ptr.is_null() then
         String
       else
