@@ -1,4 +1,7 @@
 class val SelectorItem
+  """
+  An item in a selector widget. Each item has an option string (displayed in the selection list) and a description string (shown alongside it).
+  """
   let option: String val
   let desc: String val
 
@@ -8,6 +11,13 @@ class val SelectorItem
 
 
 class NotCursesSelector is InputWidget
+  """
+  A single-selection menu widget. Implements `InputWidget` — can be focused to receive keyboard input (arrow keys to navigate, Enter to confirm).
+
+  Creates and manages its own child plane. Use `NcChannels.initializer()` or `NcChannels.set_fg_rgb8()` / `NcChannels.set_bg_rgb8()` to build the `opchannels` and `descchannels` color values.
+
+  Call `destroy()` before `NotCurses.stop()` to prevent double-free.
+  """
   var _ptr: NullablePointer[NcSelector] tag = NullablePointer[NcSelector].none()
   var _nc: NotCurses = NotCurses.none()
   var _items: Array[SelectorItem] = Array[SelectorItem]
@@ -66,6 +76,7 @@ class NotCursesSelector is InputWidget
     end
 
   fun selected(): String val =>
+    """Get the currently selected option string."""
     recover val
       let ptr = NotCursesFFI.selector_selected(_ptr)
       if ptr.is_null() then
@@ -76,6 +87,7 @@ class NotCursesSelector is InputWidget
     end
 
   fun ref add_item(option: String, desc: String)? =>
+    """Add a new item to the selector."""
     var ci = Ncselectoritem
     ci.option = option.cstring()
     ci.desc = desc.cstring()
@@ -84,6 +96,7 @@ class NotCursesSelector is InputWidget
     _items.push(SelectorItem(option, desc))
 
   fun ref del_item(option: String)? =>
+    """Remove an item by its option string."""
     if NotCursesFFI.selector_delitem(_ptr, option.cstring()) != 0 then
       error
     end
@@ -99,6 +112,7 @@ class NotCursesSelector is InputWidget
     end
 
   fun ref next_item(): String val =>
+    """Navigate to the next item. Returns the newly selected option string."""
     recover val
       let ptr = NotCursesFFI.selector_nextitem(_ptr)
       if ptr.is_null() then
@@ -109,6 +123,7 @@ class NotCursesSelector is InputWidget
     end
 
   fun ref prev_item(): String val =>
+    """Navigate to the previous item. Returns the newly selected option string."""
     recover val
       let ptr = NotCursesFFI.selector_previtem(_ptr)
       if ptr.is_null() then
@@ -122,6 +137,7 @@ class NotCursesSelector is InputWidget
     NotCursesFFI.selector_offer_input(_ptr, NullablePointer[Ncinput](ni))
 
   fun ref destroy() =>
+    """Destroy the selector and its child plane."""
     if not _destroyed then
       _destroyed = true
       _nc.unfocus_if(this)

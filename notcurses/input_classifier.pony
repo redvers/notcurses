@@ -1,6 +1,6 @@
 primitive InputClassifier
   """
-  Converts a raw Ncinput struct into a typed InputEvent.
+  Converts raw `Ncinput` C structs into typed Pony input events. Used internally by the input polling system.
   """
   fun _event_type(evtype: I32): InputEventType =>
     if evtype == NcInputType.press() then InputPress
@@ -17,6 +17,7 @@ primitive InputClassifier
     id == 1115001  // NCKEY_RESIZE = 1115000 + 1
 
   fun classify(ni: Ncinput): InputEvent =>
+    """Classify a raw input struct into a `KeyEvent`, `MouseEvent`, `ResizeEvent`, or `UnknownEvent`."""
     let id = ni.id
     let evtype = _event_type(ni.evtype)
 
