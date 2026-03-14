@@ -1,6 +1,20 @@
 use "time"
 
 class NotCurses
+  """
+  The main notcurses instance. Manages terminal lifecycle, rendering, and input routing.
+
+  Embed this in your actor (which must implement `NotCursesActor`). The instance
+  is `ref` capability — it must live inside the actor that uses it, because Pony's
+  capability system prevents sharing mutable state across actors. This is the design,
+  not a limitation: your actor serializes all terminal access, eliminating data races.
+
+  Lifecycle: construct with `NotCurses(actor)` in your actor's constructor, then
+  `_initiate()` is called as a behavior to begin setup. Call `stop()` to shut down.
+
+  The `none()` constructor provides a default empty value for field initialization
+  before the real instance is created in your constructor.
+  """
   var ptr: NullablePointer[NcNotcurses] tag = NullablePointer[NcNotcurses].none()
   var enclosing: (NotCursesActor | None)
   var _timers: (Timers | None) = None
@@ -54,6 +68,11 @@ class NotCurses
     enc._initiate()
 
   fun ref stdplane(): NotCursesPlane =>
+    """
+    Get the standard plane, which covers the entire terminal.
+
+    The standard plane is created automatically and persists for the lifetime of the NotCurses instance. It is the root of the plane hierarchy — all other planes are children (or descendants) of it.
+    """
     match _stdplane
     | let p: NotCursesPlane => p
     else
@@ -63,24 +82,45 @@ class NotCurses
     end
 
   fun dim_yx(): (U32, U32) =>
+    """Get the terminal dimensions as (rows, columns)."""
     NotCursesFFI.term_dim_yx(ptr)
 
   fun render()? =>
+    """
+    Render all planes to the terminal.
+
+    Notcurses uses a double-buffer model: write to planes, then call `render()` to push everything to the terminal at once. Call this after finishing all updates for a frame — one render per batch of changes.
+    """
     if NotCursesFFI.render(ptr) != 0 then error end
 
+  fun mice_enable(eventmask: U32)? =>
+    """
+    Enable mouse event reporting with the given event mask.
+
+    Use `NcMice` constants to build the mask: `NcMice.all_events()`, `NcMice.button_event()`, `NcMice.move_event()`, `NcMice.drag_event()`.
+    """
+    if NotCursesFFI.mice_enable(ptr, eventmask) != 0 then error end
+
   fun can_true_color(): Bool =>
+    """Check whether the terminal supports 24-bit true color."""
     NotCursesFFI.cantruecolor(ptr)
 
   fun can_utf8(): Bool =>
+    """Check whether the terminal supports UTF-8."""
     NotCursesFFI.canutf8(ptr)
 
   fun ref focus(widget: InputWidget) =>
+    """
+    Set the focused input widget. Input events are offered to the focused widget first. If the widget consumes the event, your actor's `input_received` is not called. Only one widget can be focused at a time.
+    """
     _focused = widget
 
   fun ref unfocus() =>
+    """Clear the focused widget. All input events go directly to `input_received`."""
     _focused = None
 
   fun ref unfocus_if(widget: InputWidget) =>
+    """Clear focus only if the given widget is currently focused. Useful when destroying a widget that might or might not have focus."""
     match _focused
     | let w: InputWidget =>
       if w is widget then _focused = None end
@@ -109,6 +149,11 @@ class NotCurses
     if needs_render then try render()? end end
 
   fun ref stop()? =>
+    """
+    Shut down notcurses and restore the terminal to its original state.
+
+    Destroy all widgets before calling this. The C library frees planes during stop, so destroying a widget after stop causes a double-free.
+    """
     // Cancel input polling
     match (_timers, _input_timer)
     | (let ts: Timers, let t: Timer tag) =>

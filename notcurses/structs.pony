@@ -12,6 +12,9 @@
      000064: [FundamentalType(long unsigned int) size=64]: channels
 */
 struct Nccell
+  """
+  A single cell on a plane. Contains a character, style, and foreground/background colors. Most users interact with cells indirectly through `PlaneOutput` and `PlaneStyleBuilder`.
+  """
   var gcluster: U32 = U32(0)
   var gcluster_backstop: U8 = U8(0)
   var width: U8 = U8(0)
@@ -36,6 +39,9 @@ struct Nccell
      000256: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Notcursesoptions
+  """
+  Options for `NotCurses` initialization. Most users don't construct this directly — use `NotCurses.create()` parameters instead.
+  """
   var termtype: Pointer[U8] tag = Pointer[U8]
   var loglevel: I32 = I32(0)
   var margin_t: U32 = U32(0)
@@ -66,6 +72,7 @@ struct Notcursesoptions
      000256: [FundamentalType(int) size=32]: xpx
 */
 struct Ncinput
+  """Raw input event from notcurses. Used internally; prefer typed `InputEvent` variants."""
   var id: U32 = U32(0)
   var y: I32 = I32(0)
   var x: I32 = I32(0)
@@ -102,6 +109,14 @@ struct Ncinput
      000416: [FundamentalType(unsigned int) size=32]: margin_r
 */
 struct Ncplaneoptions
+  """
+  Options for creating a child plane. Specifies position, size, and optional resize callback.
+
+  ```pony
+  let opts = Ncplaneoptions(where y' = 2, x' = 1, rows' = 10, cols' = 40)
+  let child = parent.child(opts)?
+  ```
+  """
   var y: I32 = I32(0)
   var x: I32 = I32(0)
   var rows: U32 = U32(0)
@@ -157,6 +172,7 @@ struct Ncplaneoptions
      000080: [FundamentalType(bool) size=8]: braille
 */
 struct Nccapabilities
+  """Terminal capability information. Query via `NotCurses.can_true_color()` etc."""
   var colors: U32 = U32(0)
   var utf8: U8 = U8(0)
   var rgb: U8 = U8(0)
@@ -182,6 +198,7 @@ struct Nccapabilities
      000320: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Ncreeloptions
+  """Options for reel widgets. Scroll direction, border channels, and flags."""
   var bordermask: U32 = U32(0)
   var borderchan: U64 = U64(0)
   var tabletmask: U32 = U32(0)
@@ -204,6 +221,7 @@ struct Ncreeloptions
      000128: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Ncprogbaroptions
+  """Options for `NotCursesProgbar`. Corner channel colors and flags."""
   var ulchannel: U32 = U32(0)
   var urchannel: U32 = U32(0)
   var blchannel: U32 = U32(0)
@@ -222,6 +240,7 @@ struct Ncprogbaroptions
      000064: [PointerType size=64]->[FundamentalType(char) size=8]: desc
 */
 struct Ncselectoritem
+  """Raw C struct for selector items. Prefer `SelectorItem` which handles string lifetime automatically."""
   var option: Pointer[U8] tag = Pointer[U8]
   var desc: Pointer[U8] tag = Pointer[U8]
 
@@ -247,6 +266,7 @@ struct Ncselectoritem
      000640: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Ncselectoroptions
+  """Raw C struct for selector options. Constructed internally by `NotCursesSelector`."""
   var title: Pointer[U8] tag = Pointer[U8]
   var secondary: Pointer[U8] tag = Pointer[U8]
   var footer: Pointer[U8] tag = Pointer[U8]
@@ -274,6 +294,7 @@ struct Ncselectoroptions
      000136-000191: padding (7 bytes)
 */
 struct Ncmselectoritem
+  """Raw C struct for multiselector items. Prefer `MultiselectorItem` which handles string lifetime automatically."""
   var option: Pointer[U8] tag = Pointer[U8]
   var desc: Pointer[U8] tag = Pointer[U8]
   var selected: Bool = false
@@ -303,6 +324,7 @@ struct Ncmselectoritem
      000640: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Ncmultiselectoroptions
+  """Raw C struct for multiselector options. Constructed internally by `NotCursesMultiselector`."""
   var title: Pointer[U8] tag = Pointer[U8]
   var secondary: Pointer[U8] tag = Pointer[U8]
   var footer: Pointer[U8] tag = Pointer[U8]
@@ -330,6 +352,7 @@ struct Ncmultiselectoroptions
      000128: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Ncreaderoptions
+  """Options for `NotCursesReader`. Channel colors and flags."""
   var tchannels: U64 = 0
   var tattrword: U32 = 0
   var _padding0: U32 = 0
@@ -354,6 +377,7 @@ struct Ncreaderoptions
      000320: [FundamentalType(long unsigned int) size=64]: flags
 */
 struct Ncplotoptions
+  """Options for `NotCursesUPlot`. Channel colors, range, grid, and flags."""
   var maxchannels: U64 = 0
   var minchannels: U64 = 0
   var legendstyle: U16 = 0

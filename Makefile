@@ -51,7 +51,7 @@ demo: $(demo_binary)
 $(demo_binary): $(DEMO_FILES) $(SOURCE_FILES) | $(BUILD_DIR) dependencies
 	${PONYC} -o ${BUILD_DIR} demo
 
-EXAMPLES := progbar selector multiselector reader ponyapi uplot
+EXAMPLES := progbar selector multiselector reader ponyapi uplot ncev
 
 examples: $(addprefix example-,$(EXAMPLES))
 

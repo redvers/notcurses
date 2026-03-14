@@ -1,4 +1,7 @@
 class val MultiselectorItem
+  """
+  An item in a multiselector widget. Each item has an option string, a description string, and an initial selected state.
+  """
   let option: String val
   let desc: String val
   let selected: Bool
@@ -12,6 +15,13 @@ class val MultiselectorItem
 
 
 class NotCursesMultiselector is InputWidget
+  """
+  A multi-selection menu widget. Implements `InputWidget` — can be focused to receive keyboard input (arrow keys to navigate, Space to toggle selection).
+
+  Creates and manages its own child plane. Query selection state with `selected(count)` which returns an array of booleans, one per item.
+
+  Call `destroy()` before `NotCurses.stop()` to prevent double-free.
+  """
   var _ptr: NullablePointer[NcMultiselector] tag =
     NullablePointer[NcMultiselector].none()
   var _nc: NotCurses = NotCurses.none()
@@ -77,6 +87,7 @@ class NotCursesMultiselector is InputWidget
     _ptr = result
 
   fun ref selected(count: U32): Array[Bool] =>
+    """Get the selection state of each item. Pass the number of items as `count`. Returns an array where each element is `true` if that item is selected."""
     let arr = Array[Bool].init(false, count.usize())
     NotCursesFFI.multiselector_selected(_ptr, arr.cpointer(), count)
     arr
@@ -85,6 +96,7 @@ class NotCursesMultiselector is InputWidget
     NotCursesFFI.multiselector_offer_input(_ptr, NullablePointer[Ncinput](ni))
 
   fun ref destroy() =>
+    """Destroy the multiselector and its child plane."""
     if not _destroyed then
       _destroyed = true
       _nc.unfocus_if(this)

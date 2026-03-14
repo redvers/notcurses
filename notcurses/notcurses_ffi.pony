@@ -428,6 +428,9 @@ primitive NotCursesFFI
   fun plane_set_scrolling(n: NullablePointer[NcPlaneT] tag, scrollp: U32): Bool =>
     @ncplane_set_scrolling(n, scrollp)
 
+  fun mice_enable(nc: NullablePointer[NcNotcurses] tag, eventmask: U32): I32 =>
+    @notcurses_mice_enable(nc, eventmask)
+
   // Cell functions
   fun cell_load(n: NullablePointer[NcPlaneT] tag, c: NullablePointer[Nccell],
     gcluster: Pointer[U8] tag): I32

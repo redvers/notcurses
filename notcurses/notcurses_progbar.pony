@@ -1,4 +1,11 @@
 class NotCursesProgbar
+  """
+  A progress bar widget. Display-only — does not implement `InputWidget`.
+
+  Creates and manages its own child plane. Set progress with `set_progress()` using a value from 0.0 (empty) to 1.0 (full).
+
+  Call `destroy()` before `NotCurses.stop()` to prevent double-free.
+  """
   var _ptr: NullablePointer[NcProgbar] tag = NullablePointer[NcProgbar].none()
   var _destroyed: Bool = false
 
@@ -22,12 +29,15 @@ class NotCursesProgbar
     _ptr = result
 
   fun set_progress(p: F64)? =>
+    """Set the progress value (0.0 to 1.0)."""
     if NotCursesFFI.progbar_set_progress(_ptr, p) != 0 then error end
 
   fun progress(): F64 =>
+    """Get the current progress value."""
     NotCursesFFI.progbar_progress(_ptr)
 
   fun ref destroy() =>
+    """Destroy the progress bar and its child plane."""
     if not _destroyed then
       _destroyed = true
       NotCursesFFI.progbar_destroy(_ptr)
