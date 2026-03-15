@@ -75,7 +75,7 @@ actor SelectorApp is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      if k.codepoint == 113 then  // 'q'
+      if k.codepoint == 'q' then
         _sel.destroy()
         try _nc.stop()? end
       elseif k.codepoint == 1115121 then  // NCKEY_ENTER
@@ -163,7 +163,7 @@ actor ProgbarApp is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      if k.codepoint == 113 then  // 'q'
+      if k.codepoint == 'q' then
         match _timers | let ts: Timers => ts.dispose() end
         _bar.destroy()
         try _nc.stop()? end

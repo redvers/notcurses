@@ -52,7 +52,7 @@ actor HelloApp is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      if k.codepoint == 113 then  // 'q'
+      if k.codepoint == 'q' then
         try _nc.stop()? end
       end
     end
@@ -130,7 +130,7 @@ Do all setup work here: create planes, configure styles, write initial content, 
 be input_received(event: InputEvent) =>
   match event
   | let k: KeyEvent =>
-    if k.codepoint == 113 then  // 'q'
+    if k.codepoint == 'q' then
       try _nc.stop()? end
     end
   end
@@ -138,7 +138,7 @@ be input_received(event: InputEvent) =>
 
 The library polls for input on a timer (every 10ms by default). When input arrives, it is classified into typed events and delivered to your `input_received()` behavior. Pattern match on the `InputEvent` union to handle different event types.
 
-The codepoint `113` is the ASCII value of 'q'. Pony's character literal syntax (`'q'.u32()`) does not work in match case patterns, so use the raw integer.
+Pony character literals like `'q'` work directly in equality comparisons with `U32` values. Note that `'q'.u32()` method calls do not work in match case patterns — but simple comparisons with `==` are fine.
 
 ### Shutting Down
 

@@ -152,7 +152,7 @@ actor TaskSelectorApp is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      if k.codepoint == 113 then  // 'q'
+      if k.codepoint == 'q' then
         _cleanup()
         return
       end

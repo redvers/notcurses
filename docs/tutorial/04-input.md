@@ -87,8 +87,8 @@ actor InputApp is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      // Ctrl+Q to quit (113 = 'q')
-      if (k.codepoint == 113) and ((k.modifiers and NcKeyMod.ctrl()) != 0) then
+      // Ctrl+Q to quit
+      if (k.codepoint == 'q') and ((k.modifiers and NcKeyMod.ctrl()) != 0) then
         try _nc.stop()? end
         return
       end
@@ -195,11 +195,11 @@ Ctrl+Q and plain Q both arrive with codepoint 113. The difference is the modifie
 ```pony
 | let k: KeyEvent =>
   if (k.modifiers and NcKeyMod.ctrl()) != 0 then
-    if k.codepoint == 113 then  // Ctrl+Q
+    if k.codepoint == 'q' then  // Ctrl+Q
       try _nc.stop()? end
     end
   else
-    if k.codepoint == 113 then  // plain 'q'
+    if k.codepoint == 'q' then  // plain 'q'
       // different action
     end
   end
