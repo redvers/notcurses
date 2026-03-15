@@ -6,9 +6,9 @@
 //   bits 31..0  = background channel
 //
 // Each 32-bit channel:
-//   bits 31..30 = alpha (2 bits)
-//   bit  29     = not-default flag (set when RGB is explicitly set)
-//   bit  28     = palette-indexed flag
+//   bit  30     = not-default flag (set when RGB is explicitly set)
+//   bits 29..28 = alpha (2 bits)
+//   bit  27     = palette-indexed flag
 //   bits 23..16 = red
 //   bits 15..8  = green
 //   bits  7..0  = blue
@@ -34,23 +34,23 @@ primitive NcChannel
 
   fun set_rgb8(channel: U32, r': U32, g': U32, b': U32): U32 =>
     """Set RGB from individual components. Returns the modified channel."""
-    let c = (channel and 0xFF000000) // preserve alpha + flags
+    let c = (channel and 0x30000000) // preserve alpha
       or ((r' and 0xFF) << 16)
       or ((g' and 0xFF) << 8)
       or (b' and 0xFF)
-    c or 0x20000000 // set not-default flag
+    c or 0x40000000 // set not-default flag
 
   fun set_rgb(channel: U32, rgb: U32): U32 =>
     """Set RGB from a packed 24-bit value. Returns the modified channel."""
-    let c = (channel and 0xFF000000) or (rgb and 0x00FFFFFF)
-    c or 0x20000000
+    let c = (channel and 0x30000000) or (rgb and 0x00FFFFFF)
+    c or 0x40000000
 
   fun alpha(channel: U32): U32 =>
     """Extract the alpha value. See `NcAlpha` for constants."""
-    (channel >> 28) and 0x03 // just the 2 alpha bits
+    channel and 0x30000000
   fun set_alpha(channel: U32, a: U32): U32 =>
     """Set the alpha value. Use `NcAlpha` constants. Returns the modified channel."""
-    (channel and 0x0FFFFFFF) or ((a and 0x03) << 28)
+    (channel and 0xCFFFFFFF) or (a and 0x30000000)
 
 primitive NcChannels
   """
