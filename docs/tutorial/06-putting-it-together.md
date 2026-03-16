@@ -152,7 +152,12 @@ actor TaskSelectorApp is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      if k.codepoint == 113 then  // 'q'
+      // Filter for key-down (press) events only. Without this check,
+      // each physical keypress triggers up to three events -- press,
+      // repeat, and release -- so the handler would fire multiple times.
+      if not (k.event_type is InputPress) then return end
+
+      if k.codepoint == 'q' then
         _cleanup()
         return
       end
@@ -247,6 +252,14 @@ After focusing the selector, the input flow is:
 3. 'q' (113) passes through -- you handle quitting
 
 Events consumed by the widget trigger an automatic render by the polling loop. Events you handle yourself require an explicit `_nc.render()?`.
+
+### Filtering for Key-Down Events
+
+```pony
+if not (k.event_type is InputPress) then return end
+```
+
+A single physical keypress can produce multiple events: a press, zero or more repeats (if the key is held), and a release. Without this guard, pressing Enter once would increment the progress counter two or three times. Checking for `InputPress` ensures the handler fires exactly once per keypress.
 
 ### Detail Pane Updates
 

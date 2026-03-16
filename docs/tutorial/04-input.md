@@ -87,8 +87,8 @@ actor InputApp is NotCursesActor
   be input_received(event: InputEvent) =>
     match event
     | let k: KeyEvent =>
-      // Ctrl+Q to quit (113 = 'q')
-      if (k.codepoint == 113) and ((k.modifiers and NcKeyMod.ctrl()) != 0) then
+      // Ctrl+Q to quit (Ctrl sends uppercase codepoint)
+      if (k.codepoint == 'Q') and ((k.modifiers and NcKeyMod.ctrl()) != 0) then
         try _nc.stop()? end
         return
       end
@@ -190,18 +190,14 @@ Available modifier flags:
 
 ### Distinguishing Modified Keys
 
-Ctrl+Q and plain Q both arrive with codepoint 113. The difference is the modifier bitmask:
+Ctrl+Q sends codepoint 81 (`'Q'`, uppercase) with the ctrl modifier set. Plain 'q' sends codepoint 113 (`'q'`, lowercase) with no modifiers. Check both the codepoint and the modifier bitmask:
 
 ```pony
 | let k: KeyEvent =>
-  if (k.modifiers and NcKeyMod.ctrl()) != 0 then
-    if k.codepoint == 113 then  // Ctrl+Q
-      try _nc.stop()? end
-    end
-  else
-    if k.codepoint == 113 then  // plain 'q'
-      // different action
-    end
+  if (k.codepoint == 'Q') and ((k.modifiers and NcKeyMod.ctrl()) != 0) then
+    try _nc.stop()? end  // Ctrl+Q
+  elseif k.codepoint == 'q' then
+    None  // plain 'q' — different action
   end
 ```
 

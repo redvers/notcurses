@@ -32,10 +32,8 @@ actor SelectorDemo is NotCursesActor
         a
       end
 
-      // Channel encoding: upper 32 = FG, lower 32 = BG
-      // Bit 30 (0x40000000) = "not default color", lower 24 = RGB
-      let green_on_black: U64 = (0x40_00FF00 << 32) or 0x40_000000
-      let white_on_black: U64 = (0x40_CCCCCC << 32) or 0x40_000000
+      let green_on_black = NcChannels.initializer(0, 255, 0, 0, 0, 0)
+      let white_on_black = NcChannels.initializer(204, 204, 204, 0, 0, 0)
 
       _sel = NotCursesSelector(_nc, std, 2, 2,
         rows - 4, cols - 4, items,
