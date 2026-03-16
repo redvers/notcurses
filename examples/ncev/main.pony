@@ -111,49 +111,47 @@ actor NcEv is NotCursesActor
     consume s
 
   fun _special_name(cp: U32): String val =>
-    // A selection of common NCKEY_* values
-    if     cp == 1115001 then " (Resize)"
-    elseif cp == 1115010 then " (Up)"
-    elseif cp == 1115011 then " (Right)"
-    elseif cp == 1115012 then " (Down)"
-    elseif cp == 1115013 then " (Left)"
-    elseif cp == 1115014 then " (Ins)"
-    elseif cp == 1115015 then " (Del)"
-    elseif cp == 1115016 then " (Backspace)"
-    elseif cp == 1115017 then " (PgDown)"
-    elseif cp == 1115018 then " (PgUp)"
-    elseif cp == 1115019 then " (Home)"
-    elseif cp == 1115020 then " (End)"
-    elseif cp == 1115021 then " (F00)"
-    elseif cp == 1115022 then " (F01)"
-    elseif cp == 1115023 then " (F02)"
-    elseif cp == 1115024 then " (F03)"
-    elseif cp == 1115025 then " (F04)"
-    elseif cp == 1115026 then " (F05)"
-    elseif cp == 1115027 then " (F06)"
-    elseif cp == 1115028 then " (F07)"
-    elseif cp == 1115029 then " (F08)"
-    elseif cp == 1115030 then " (F09)"
-    elseif cp == 1115031 then " (F10)"
-    elseif cp == 1115032 then " (F11)"
-    elseif cp == 1115033 then " (F12)"
-    elseif cp == 1115036 then " (Enter)"
-    elseif cp == 1115037 then " (CLS)"
-    elseif cp == 1115038 then " (DLeft)"
-    elseif cp == 1115039 then " (DRight)"
-    elseif cp == 1115040 then " (ULeft)"
-    elseif cp == 1115041 then " (URight)"
-    elseif cp == 1115042 then " (Center)"
-    elseif cp == 1115043 then " (Begin)"
-    elseif cp == 1115044 then " (Cancel)"
-    elseif cp == 1115045 then " (Close)"
-    elseif cp == 1115057 then " (Esc)"
-    elseif cp == 1115121 then " (Tab)"
-    elseif cp == 1115122 then " (STab)"
-    elseif cp == 1115200 then " (ScrollUp)"
-    elseif cp == 1115201 then " (Button1)"
-    elseif cp == 1115202 then " (Button2)"
-    elseif cp == 1115203 then " (Button3)"
+    // NCKEY_* values: preterunicode(n) = 1115000 + n
+    // See notcurses/nckeys.h for authoritative values
+    if     cp == 1115001 then " (Resize)"    // preterunicode(1)
+    elseif cp == 1115002 then " (Up)"        // preterunicode(2)
+    elseif cp == 1115003 then " (Right)"     // preterunicode(3)
+    elseif cp == 1115004 then " (Down)"      // preterunicode(4)
+    elseif cp == 1115005 then " (Left)"      // preterunicode(5)
+    elseif cp == 1115006 then " (Ins)"       // preterunicode(6)
+    elseif cp == 1115007 then " (Del)"       // preterunicode(7)
+    elseif cp == 1115008 then " (Backspace)" // preterunicode(8)
+    elseif cp == 1115009 then " (PgDown)"    // preterunicode(9)
+    elseif cp == 1115010 then " (PgUp)"      // preterunicode(10)
+    elseif cp == 1115011 then " (Home)"      // preterunicode(11)
+    elseif cp == 1115012 then " (End)"       // preterunicode(12)
+    elseif cp == 1115020 then " (F00)"       // preterunicode(20)
+    elseif cp == 1115021 then " (F01)"       // preterunicode(21)
+    elseif cp == 1115022 then " (F02)"       // preterunicode(22)
+    elseif cp == 1115023 then " (F03)"       // preterunicode(23)
+    elseif cp == 1115024 then " (F04)"       // preterunicode(24)
+    elseif cp == 1115025 then " (F05)"       // preterunicode(25)
+    elseif cp == 1115026 then " (F06)"       // preterunicode(26)
+    elseif cp == 1115027 then " (F07)"       // preterunicode(27)
+    elseif cp == 1115028 then " (F08)"       // preterunicode(28)
+    elseif cp == 1115029 then " (F09)"       // preterunicode(29)
+    elseif cp == 1115030 then " (F10)"       // preterunicode(30)
+    elseif cp == 1115031 then " (F11)"       // preterunicode(31)
+    elseif cp == 1115032 then " (F12)"       // preterunicode(32)
+    elseif cp == 1115121 then " (Enter)"     // preterunicode(121)
+    elseif cp == 1115122 then " (CLS)"       // preterunicode(122)
+    elseif cp == 1115123 then " (DLeft)"     // preterunicode(123)
+    elseif cp == 1115124 then " (DRight)"    // preterunicode(124)
+    elseif cp == 1115125 then " (ULeft)"     // preterunicode(125)
+    elseif cp == 1115126 then " (URight)"    // preterunicode(126)
+    elseif cp == 1115127 then " (Center)"    // preterunicode(127)
+    elseif cp == 1115128 then " (Begin)"     // preterunicode(128)
+    elseif cp == 1115129 then " (Cancel)"    // preterunicode(129)
+    elseif cp == 1115130 then " (Close)"     // preterunicode(130)
+    elseif cp == 1115200 then " (ScrollUp)"  // preterunicode(200)
+    elseif cp == 1115201 then " (Button1)"   // preterunicode(201)
+    elseif cp == 1115202 then " (Button2)"   // preterunicode(202)
+    elseif cp == 1115203 then " (Button3)"   // preterunicode(203)
     else ""
     end
 
