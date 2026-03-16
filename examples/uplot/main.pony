@@ -26,7 +26,7 @@ actor UPlotDemo is NotCursesActor
       (let rows, let cols) = std.dim_yx()
 
       _plot = NotCursesUPlot(std, 1, 1, rows - 2, cols - 2
-        where gridtype = NcBlitter.blit_8x1(),
+        where gridtype = NcBlitter.braille(),
         flags = NcPlotOption.labelticksd() or NcPlotOption.printsample(),
         title = "Sine Wave")?
 
