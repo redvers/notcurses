@@ -6,7 +6,8 @@ GET_DEPENDENCIES_WITH := corral fetch
 CLEAN_DEPENDENCIES_WITH := corral clean
 PONYC ?= ponyc
 COMPILE_WITH := corral run -- $(PONYC)
-BUILD_DOCS_WITH := corral run -- pony-doc
+#BUILD_DOCS_WITH := corral run -- pony-doc
+BUILD_DOCS_WITH := corral run -- $(PONYC) --docs-public --pass=docs 
 
 BUILD_DIR ?= build/$(config)
 SRC_DIR ?= $(PACKAGE)
