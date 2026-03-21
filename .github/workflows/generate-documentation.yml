@@ -25,15 +25,15 @@ jobs:
       - name: Generate documentation
         uses: docker://ponylang/library-documentation-action-v2:release
         with:
-          site_url: "https://redvers.github.io/pony-odbc/"
-          library_name: "pony-odbc"
-          docs_build_dir: "build/pony-odbc-docs"
+          site_url: "https://redvers.github.io/notcurses/"
+          library_name: "notcurses"
+          docs_build_dir: "build/notcurses-docs"
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'build/pony-odbc-docs/site/'
+          path: 'build/notcurses-docs/site/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
